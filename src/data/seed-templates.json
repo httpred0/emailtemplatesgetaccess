@@ -1,0 +1,1015 @@
+[
+  {
+    "id": "mrds7sry-0-3r9u9",
+    "name": "Another example",
+    "kind": "marketing",
+    "theme": "dark",
+    "subject": "",
+    "preheader": "",
+    "modules": [
+      {
+        "uid": "mrds7srz-1-vcb0k",
+        "moduleId": "logo-heading",
+        "variantId": "default",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrds88m7-7-uglpo",
+        "moduleId": "spacer",
+        "variantId": "s24",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrds83iv-6-x8n3m",
+        "moduleId": "image",
+        "variantId": "full",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22283%22%20viewBox%3D%220%200%20600%20283%22%3E%3Crect%20width%3D%22600%22%20height%3D%22283%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2231%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%22252%22%20cy%3D%22107.54%22%20rx%3D%22120%22%20ry%3D%2296.22000000000001%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%22330%22%20cy%3D%22169.79999999999998%22%20rx%3D%22108%22%20ry%3D%2290.56%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22396%22%20cy%3D%22118.86%22%20rx%3D%2290%22%20ry%3D%2279.24000000000001%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%22300%22%20cy%3D%22141.5%22%20rx%3D%22118.86%22%20ry%3D%22118.86%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "alt": ""
+        }
+      },
+      {
+        "uid": "mrds7zae-5-tyrra",
+        "moduleId": "heading",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Eyebrow",
+          "title": "Reset your password"
+        }
+      },
+      {
+        "uid": "mrds8fdb-8-2wueh",
+        "moduleId": "body",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "text": "A password reset was requested for this account. The link expires in 30 minutes.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrds90cw-a-fxq9y",
+        "moduleId": "buttons",
+        "variantId": "primary-centered",
+        "color": "dark",
+        "values": {
+          "label1": "Reset password",
+          "url1": "https://getaccess.com",
+          "label2": "Learn more",
+          "url2": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrds98ao-b-9nrcv",
+        "moduleId": "spacer",
+        "variantId": "s24",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrds8vug-9-w553y",
+        "moduleId": "divider",
+        "variantId": "default",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrds9hup-c-85thw",
+        "moduleId": "heading",
+        "variantId": "centered-eyebrow",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Eyebrow",
+          "title": "Reset your password"
+        }
+      },
+      {
+        "uid": "mrds9z1l-d-0ak0e",
+        "moduleId": "feature",
+        "variantId": "img-left",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22169%22%20height%3D%22130%22%20viewBox%3D%220%200%20169%20130%22%3E%3Crect%20width%3D%22169%22%20height%3D%22130%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2214%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%2270.98%22%20cy%3D%2249.4%22%20rx%3D%2233.800000000000004%22%20ry%3D%2244.2%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%2292.95%22%20cy%3D%2278%22%20rx%3D%2230.419999999999998%22%20ry%3D%2241.6%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22111.54%22%20cy%3D%2254.6%22%20rx%3D%2225.349999999999998%22%20ry%3D%2236.400000000000006%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%2284.5%22%20cy%3D%2265%22%20rx%3D%2254.6%22%20ry%3D%2254.6%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "title": "Title Goes Here",
+          "text": "Two or three lines that explain why this matters to the reader."
+        }
+      },
+      {
+        "uid": "mrdsa262-e-f3azf",
+        "moduleId": "feature",
+        "variantId": "img-right",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22169%22%20height%3D%22130%22%20viewBox%3D%220%200%20169%20130%22%3E%3Crect%20width%3D%22169%22%20height%3D%22130%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2214%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%2270.98%22%20cy%3D%2249.4%22%20rx%3D%2233.800000000000004%22%20ry%3D%2244.2%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%2292.95%22%20cy%3D%2278%22%20rx%3D%2230.419999999999998%22%20ry%3D%2241.6%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22111.54%22%20cy%3D%2254.6%22%20rx%3D%2225.349999999999998%22%20ry%3D%2236.400000000000006%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%2284.5%22%20cy%3D%2265%22%20rx%3D%2254.6%22%20ry%3D%2254.6%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "title": "Title Goes Here",
+          "text": "Two or three lines that explain why this matters to the reader."
+        }
+      },
+      {
+        "uid": "mrdsag5e-f-gel9h",
+        "moduleId": "buttons",
+        "variantId": "secondary-centered",
+        "color": "dark",
+        "values": {
+          "label1": "Reset password",
+          "url1": "https://getaccess.com",
+          "label2": "Learn more",
+          "url2": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdsazkz-g-5r8dg",
+        "moduleId": "heading",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Eyebrow",
+          "title": "Reset your password"
+        }
+      },
+      {
+        "uid": "mrdscae5-k-qed3i",
+        "moduleId": "body",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "text": "A password reset was requested for this account. The link expires in 30 minutes.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdsb8ir-h-tfapm",
+        "moduleId": "image",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22283%22%20viewBox%3D%220%200%20600%20283%22%3E%3Crect%20width%3D%22600%22%20height%3D%22283%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2231%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%22252%22%20cy%3D%22107.54%22%20rx%3D%22120%22%20ry%3D%2296.22000000000001%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%22330%22%20cy%3D%22169.79999999999998%22%20rx%3D%22108%22%20ry%3D%2290.56%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22396%22%20cy%3D%22118.86%22%20rx%3D%2290%22%20ry%3D%2279.24000000000001%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%22300%22%20cy%3D%22141.5%22%20rx%3D%22118.86%22%20ry%3D%22118.86%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "alt": ""
+        }
+      },
+      {
+        "uid": "mrdscwmu-l-st14b",
+        "moduleId": "body",
+        "variantId": "plain",
+        "color": "dark",
+        "values": {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel augue non justo efficitur tincidunt. Curabitur tristique, nibh at fermentum facilisis, velit ligula luctus purus, vitae tincidunt lorem justo non lectus.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdsc0rx-j-bccjc",
+        "moduleId": "list",
+        "variantId": "bullet",
+        "color": "dark",
+        "values": {
+          "items": "Committee review.\nAccredited investor verification, as required under Rule 506(c).\nDecision by email."
+        }
+      },
+      {
+        "uid": "mrdsdrfr-m-vnqvq",
+        "moduleId": "callout",
+        "variantId": "regular",
+        "color": "dark",
+        "values": {
+          "text": "Your concierge is Elena Marsh.",
+          "linkLabel": "Reply to this email",
+          "linkUrl": "mailto:concierge@getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdsekbl-o-nbqr2",
+        "moduleId": "spacer",
+        "variantId": "s12",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdse040-n-gwqpl",
+        "moduleId": "body",
+        "variantId": "plain",
+        "color": "dark",
+        "values": {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vel augue non justo efficitur tincidunt. Curabitur tristique, nibh at fermentum facilisis, velit ligula luctus purus, vitae tincidunt lorem justo non lectus.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdsbq8k-i-c1idb",
+        "moduleId": "card-numbered",
+        "variantId": "sapphire",
+        "color": "dark",
+        "values": {
+          "number": "1",
+          "title": "Title Goes Here",
+          "text": "A short paragraph describing this step."
+        }
+      },
+      {
+        "uid": "mrdsfonu-p-u0y82",
+        "moduleId": "banner-cta",
+        "variantId": "cream",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Eyebrow",
+          "title": "Title Goes Here",
+          "text": "A short editorial paragraph that frames the action below.",
+          "ctaLabel": "Get started",
+          "ctaUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdsg6cb-r-fw2oq",
+        "moduleId": "highlight",
+        "variantId": "sapphire",
+        "color": "dark",
+        "values": {
+          "label": "Item 1",
+          "description": "Description",
+          "tag": "Main content"
+        }
+      },
+      {
+        "uid": "mrdsg88j-s-shy1f",
+        "moduleId": "spacer",
+        "variantId": "s8",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdsgk58-t-fh631",
+        "moduleId": "highlight",
+        "variantId": "emerald",
+        "color": "dark",
+        "values": {
+          "label": "Item 1",
+          "description": "Description",
+          "tag": "Main content"
+        }
+      },
+      {
+        "uid": "mrdsgpxw-u-6yn1f",
+        "moduleId": "spacer",
+        "variantId": "s16",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdsh2qc-v-h1p0t",
+        "moduleId": "buttons",
+        "variantId": "primary-centered",
+        "color": "dark",
+        "values": {
+          "label1": "Reset password",
+          "url1": "https://getaccess.com",
+          "label2": "Learn more",
+          "url2": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdshepx-w-gpm2r",
+        "moduleId": "spacer",
+        "variantId": "s12",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrds7srz-2-h50yl",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrds7srz-3-kad1s",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "updatedAt": 1783618645877
+  },
+  {
+    "name": "Welcome",
+    "kind": "marketing",
+    "theme": "dark",
+    "subject": "Access, granted.",
+    "preheader": "Welcome to Get Access — here is how to make the most of it.",
+    "modules": [
+      {
+        "uid": "mrdjg41v-9-188sm",
+        "moduleId": "logo-heading",
+        "variantId": "default",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdrwkh9-1-c7jtk",
+        "moduleId": "spacer",
+        "variantId": "s24",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdjg41v-a-umdej",
+        "moduleId": "image",
+        "variantId": "full",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22420%22%20viewBox%3D%220%200%20600%20420%22%3E%3Crect%20width%3D%22600%22%20height%3D%22420%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2247%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%22252%22%20cy%3D%22159.6%22%20rx%3D%22120%22%20ry%3D%22142.8%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%22330%22%20cy%3D%22252%22%20rx%3D%22108%22%20ry%3D%22134.4%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22396%22%20cy%3D%22176.4%22%20rx%3D%2290%22%20ry%3D%22117.60000000000001%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%22300%22%20cy%3D%22210%22%20rx%3D%22176.4%22%20ry%3D%22176.4%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "alt": ""
+        }
+      },
+      {
+        "uid": "mrdjg41v-b-y1lkx",
+        "moduleId": "heading",
+        "variantId": "centered-eyebrow",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Welcome",
+          "title": "Access, granted."
+        }
+      },
+      {
+        "uid": "mrdhmpev-1s-blvgc",
+        "moduleId": "body",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "text": "Hello {{first_name}},\n\nYou’re inside. Get Access brings private-market deals, vetted contributors and a concierge team into one place. Here’s how to make your first week count.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-1t-2mc95",
+        "moduleId": "card-numbered",
+        "variantId": "sapphire",
+        "color": "dark",
+        "values": {
+          "number": "1",
+          "title": "Browse live deals",
+          "text": "See what’s open right now, with terms and timelines up front."
+        }
+      },
+      {
+        "uid": "mrdhmpev-1u-blwul",
+        "moduleId": "card-numbered",
+        "variantId": "emerald",
+        "color": "dark",
+        "values": {
+          "number": "2",
+          "title": "Reserve your allocation",
+          "text": "Move early — allocations are first come, first served."
+        }
+      },
+      {
+        "uid": "mrdhmpev-1v-itvqb",
+        "moduleId": "card-numbered",
+        "variantId": "turquoise",
+        "color": "dark",
+        "values": {
+          "number": "3",
+          "title": "Track it in the app",
+          "text": "Updates, documents and your portfolio, all in your pocket."
+        }
+      },
+      {
+        "uid": "mrdhmpev-1w-ve93z",
+        "moduleId": "banner-cta",
+        "variantId": "cream",
+        "color": "dark",
+        "values": {
+          "eyebrow": "First steps",
+          "title": "Your first deal awaits",
+          "text": "Take five minutes to set your interests — we’ll surface deals that fit.",
+          "ctaLabel": "Explore deals",
+          "ctaUrl": "https://getaccess.com/deals"
+        }
+      },
+      {
+        "uid": "mrdrxg5z-3-7fpmw",
+        "moduleId": "spacer",
+        "variantId": "s24",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-1x-1yf18",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-1y-yssnn",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-1z-cp1rl",
+    "updatedAt": 1783617710015
+  },
+  {
+    "name": "New Deal",
+    "kind": "marketing",
+    "theme": "dark",
+    "subject": "New deal: {{deal_name}}",
+    "preheader": "A new opportunity just went live.",
+    "modules": [
+      {
+        "uid": "mrdjg41v-c-kpezo",
+        "moduleId": "logo-heading",
+        "variantId": "default",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdjg41v-d-ouyjr",
+        "moduleId": "image",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22420%22%20viewBox%3D%220%200%20600%20420%22%3E%3Crect%20width%3D%22600%22%20height%3D%22420%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2247%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%22252%22%20cy%3D%22159.6%22%20rx%3D%22120%22%20ry%3D%22142.8%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%22330%22%20cy%3D%22252%22%20rx%3D%22108%22%20ry%3D%22134.4%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22396%22%20cy%3D%22176.4%22%20rx%3D%2290%22%20ry%3D%22117.60000000000001%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%22300%22%20cy%3D%22210%22%20rx%3D%22176.4%22%20ry%3D%22176.4%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "alt": ""
+        }
+      },
+      {
+        "uid": "mrdjg41v-e-ede8u",
+        "moduleId": "heading",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "eyebrow": "New deal",
+          "title": "{{deal_name}}"
+        }
+      },
+      {
+        "uid": "mrdhmpev-21-cbowp",
+        "moduleId": "body",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "text": "A new opportunity is live for members. Here are the essentials — full materials, terms and the data room are in the deal page.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-22-f0id7",
+        "moduleId": "highlight",
+        "variantId": "sapphire",
+        "color": "dark",
+        "values": {
+          "label": "Sector",
+          "description": "Consumer AI",
+          "tag": "Series B"
+        }
+      },
+      {
+        "uid": "mrdhmpev-23-vm9xt",
+        "moduleId": "highlight",
+        "variantId": "emerald",
+        "color": "dark",
+        "values": {
+          "label": "Minimum",
+          "description": "$10,000",
+          "tag": "Allocation"
+        }
+      },
+      {
+        "uid": "mrdhmpev-24-hhe16",
+        "moduleId": "highlight",
+        "variantId": "turquoise",
+        "color": "dark",
+        "values": {
+          "label": "Closes",
+          "description": "July 31",
+          "tag": "Timeline"
+        }
+      },
+      {
+        "uid": "mrdhmpev-25-0mfba",
+        "moduleId": "spacer",
+        "variantId": "s16",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-26-tcdyo",
+        "moduleId": "buttons",
+        "variantId": "secondary-centered",
+        "color": "dark",
+        "values": {
+          "label1": "View the deal",
+          "url1": "https://getaccess.com/deals/{{deal_slug}}",
+          "label2": "Learn more",
+          "url2": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-27-gxpmr",
+        "moduleId": "secondary-note",
+        "variantId": "centered",
+        "color": "dark",
+        "values": {
+          "text": "Allocations are first come, first served. Membership terms apply."
+        }
+      },
+      {
+        "uid": "mrdhmpev-28-8h8ev",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-29-tlerm",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-2a-vsb4t",
+    "updatedAt": 1783618070410
+  },
+  {
+    "name": "New Contributor",
+    "kind": "marketing",
+    "theme": "dark",
+    "subject": "Meet {{contributor_name}}",
+    "preheader": "A new contributor just joined Get Access.",
+    "modules": [
+      {
+        "uid": "mrdjg41v-f-qjzye",
+        "moduleId": "logo-heading",
+        "variantId": "default",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdjg41v-h-583oa",
+        "moduleId": "heading",
+        "variantId": "centered-eyebrow",
+        "color": "dark",
+        "values": {
+          "eyebrow": "New contributor",
+          "title": "Meet {{contributor_name}}"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2c-egrg8",
+        "moduleId": "body",
+        "variantId": "centered-link",
+        "color": "dark",
+        "values": {
+          "text": "A new contributor has joined the platform. Members get direct access to their deal flow, notes and track record.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdjg41v-g-6nrp7",
+        "moduleId": "image",
+        "variantId": "full",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22600%22%20height%3D%22420%22%20viewBox%3D%220%200%20600%20420%22%3E%3Crect%20width%3D%22600%22%20height%3D%22420%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2247%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%22252%22%20cy%3D%22159.6%22%20rx%3D%22120%22%20ry%3D%22142.8%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%22330%22%20cy%3D%22252%22%20rx%3D%22108%22%20ry%3D%22134.4%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22396%22%20cy%3D%22176.4%22%20rx%3D%2290%22%20ry%3D%22117.60000000000001%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%22300%22%20cy%3D%22210%22%20rx%3D%22176.4%22%20ry%3D%22176.4%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "alt": ""
+        }
+      },
+      {
+        "uid": "mrdrzdux-4-312aq",
+        "moduleId": "spacer",
+        "variantId": "s24",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-2d-7xgg1",
+        "moduleId": "feature",
+        "variantId": "img-left",
+        "color": "dark",
+        "values": {
+          "image": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22169%22%20height%3D%22130%22%20viewBox%3D%220%200%20169%20130%22%3E%3Crect%20width%3D%22169%22%20height%3D%22130%22%20fill%3D%22%23161616%22%2F%3E%3Cdefs%3E%3Cfilter%20id%3D%22b%22%20x%3D%22-50%25%22%20y%3D%22-50%25%22%20width%3D%22200%25%22%20height%3D%22200%25%22%3E%3CfeGaussianBlur%20stdDeviation%3D%2214%22%2F%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cg%20filter%3D%22url(%23b)%22%3E%3Cellipse%20cx%3D%2270.98%22%20cy%3D%2249.4%22%20rx%3D%2233.800000000000004%22%20ry%3D%2244.2%22%20fill%3D%22%23EBD4AB%22%2F%3E%3Cellipse%20cx%3D%2292.95%22%20cy%3D%2278%22%20rx%3D%2230.419999999999998%22%20ry%3D%2241.6%22%20fill%3D%22%23308081%22%2F%3E%3Cellipse%20cx%3D%22111.54%22%20cy%3D%2254.6%22%20rx%3D%2225.349999999999998%22%20ry%3D%2236.400000000000006%22%20fill%3D%22%23CC9854%22%2F%3E%3C%2Fg%3E%3Cellipse%20cx%3D%2284.5%22%20cy%3D%2265%22%20rx%3D%2254.6%22%20ry%3D%2254.6%22%20fill%3D%22none%22%20stroke%3D%22%23C09A6A%22%20stroke-opacity%3D%220.5%22%2F%3E%3C%2Fsvg%3E",
+          "title": "{{contributor_name}}",
+          "text": "Operator-turned-investor. Two decades across fintech and consumer — and a portfolio members will recognize."
+        }
+      },
+      {
+        "uid": "mrdhmpev-2e-3ejz7",
+        "moduleId": "banner-cta",
+        "variantId": "sapphire",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Spotlight",
+          "title": "Hear it from them",
+          "text": "Why they joined, how they pick deals, and what they’re watching this year.",
+          "ctaLabel": "Read the interview",
+          "ctaUrl": "https://getaccess.com/contributors/{{contributor_slug}}"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2f-h7ip7",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2g-0b7to",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-2h-7ai7s",
+    "updatedAt": 1783617884188
+  },
+  {
+    "name": "Password Reset",
+    "kind": "transactional",
+    "theme": "dark",
+    "subject": "Reset your password",
+    "preheader": "The link expires in 30 minutes.",
+    "modules": [
+      {
+        "uid": "mrdhmpev-2i-8su9c",
+        "moduleId": "logo-heading",
+        "variantId": "left",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-2j-eb0ln",
+        "moduleId": "heading",
+        "variantId": "eyebrow",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Security",
+          "title": "Reset your password"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2k-m00bl",
+        "moduleId": "body",
+        "variantId": "plain",
+        "color": "dark",
+        "values": {
+          "text": "A password reset was requested for this account. The link expires in 30 minutes.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2l-flnns",
+        "moduleId": "buttons",
+        "variantId": "primary",
+        "color": "dark",
+        "values": {
+          "label1": "Reset password",
+          "url1": "{{reset_url}}",
+          "label2": "Learn more",
+          "url2": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2m-eb2te",
+        "moduleId": "secondary-note",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "text": "If you didn’t request this, ignore this email. Your password is unchanged."
+        }
+      },
+      {
+        "uid": "mrdhmpev-2o-cc6ek",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2p-p1w89",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-2q-7es26",
+    "updatedAt": 1783617892924
+  },
+  {
+    "name": "Verify Email",
+    "kind": "transactional",
+    "theme": "dark",
+    "subject": "Your verification code",
+    "preheader": "Enter this code to verify your email.",
+    "modules": [
+      {
+        "uid": "mrdhmpev-2r-tvs80",
+        "moduleId": "logo-heading",
+        "variantId": "left",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-2s-ywcmt",
+        "moduleId": "heading",
+        "variantId": "eyebrow",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Verification",
+          "title": "Confirm your email"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2t-5y4a5",
+        "moduleId": "body",
+        "variantId": "plain",
+        "color": "dark",
+        "values": {
+          "text": "Enter this code in the app to verify your email address. It expires in 10 minutes.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2u-19pc0",
+        "moduleId": "code",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "code": "LH5W09"
+        }
+      },
+      {
+        "uid": "mrds3rkw-5-zgqsv",
+        "moduleId": "callout",
+        "variantId": "regular",
+        "color": "dark",
+        "values": {
+          "text": "Your concierge is Elena Marsh.",
+          "linkLabel": "Reply to this email",
+          "linkUrl": "mailto:concierge@getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2x-yz3x9",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-2y-qokxk",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-2z-b2bjb",
+    "updatedAt": 1783618030561
+  },
+  {
+    "name": "Application Received",
+    "kind": "transactional",
+    "theme": "dark",
+    "subject": "Your application is in review",
+    "preheader": "Review typically takes 2–3 days.",
+    "modules": [
+      {
+        "uid": "mrdhmpev-30-oqzp0",
+        "moduleId": "logo-heading",
+        "variantId": "left",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-31-1k1j2",
+        "moduleId": "heading",
+        "variantId": "eyebrow",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Application",
+          "title": "You’re in review"
+        }
+      },
+      {
+        "uid": "mrdhmpev-32-kg9fc",
+        "moduleId": "body",
+        "variantId": "plain",
+        "color": "dark",
+        "values": {
+          "text": "Thanks, {{first_name}}. Your application is with the membership committee. Review typically takes 2–3 days. What happens next:",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-33-ldr7k",
+        "moduleId": "list",
+        "variantId": "bullet",
+        "color": "dark",
+        "values": {
+          "items": "Committee review.\nAccredited investor verification, as required under Rule 506(c).\nDecision by email."
+        }
+      },
+      {
+        "uid": "mrds4756-6-qq1na",
+        "moduleId": "divider",
+        "variantId": "default",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-34-kc1s5",
+        "moduleId": "callout",
+        "variantId": "link",
+        "color": "dark",
+        "values": {
+          "text": "Your concierge is Elena Marsh.",
+          "linkLabel": "Reply to this email",
+          "linkUrl": "mailto:concierge@getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-36-794a6",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-37-lu0f3",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-38-78f5u",
+    "updatedAt": 1783618019833
+  },
+  {
+    "name": "Approved — Download the app",
+    "kind": "transactional",
+    "theme": "dark",
+    "subject": "Welcome to Get Access",
+    "preheader": "Your membership is approved.",
+    "modules": [
+      {
+        "uid": "mrdhmpev-39-moyer",
+        "moduleId": "logo-heading",
+        "variantId": "left",
+        "color": "dark",
+        "values": {}
+      },
+      {
+        "uid": "mrdhmpev-3a-1bbyt",
+        "moduleId": "heading",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "eyebrow": "Approved",
+          "title": "Welcome to Get Access"
+        }
+      },
+      {
+        "uid": "mrdhmpev-3b-wpxii",
+        "moduleId": "body",
+        "variantId": "plain",
+        "color": "dark",
+        "values": {
+          "text": "Congratulations, {{first_name}} — the committee has approved your membership. Download the app to browse live deals and set up your profile.",
+          "linkLabel": "Contact your concierge",
+          "linkUrl": "https://getaccess.com"
+        }
+      },
+      {
+        "uid": "mrdhmpev-3c-u5sxt",
+        "moduleId": "buttons",
+        "variantId": "couple",
+        "color": "dark",
+        "values": {
+          "label1": "Download for iOS",
+          "url1": "https://apps.apple.com/app/getaccess",
+          "label2": "Get it on Android",
+          "url2": "https://play.google.com/store/apps/details?id=com.getaccess"
+        }
+      },
+      {
+        "uid": "mrdhmpev-3d-kkezo",
+        "moduleId": "secondary-note",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "text": "Your login is this email address. You can set your password on first sign-in."
+        }
+      },
+      {
+        "uid": "mrdhmpev-3f-8thq0",
+        "moduleId": "footer",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "Questions? concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
+        }
+      },
+      {
+        "uid": "mrdhmpev-3g-ogrd4",
+        "moduleId": "disclosure",
+        "variantId": "default",
+        "color": "dark",
+        "values": {
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      }
+    ],
+    "id": "mrdhmpev-3h-kuw95",
+    "updatedAt": 1783618050250
+  }
+]
