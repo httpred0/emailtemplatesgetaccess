@@ -406,6 +406,9 @@ button.card__name:hover { color: var(--accent-hover); }
 .canvas-wrap[data-theme='light'] .canvas-card {
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07);
 }
+.canvas-wrap[data-theme='cream'] .canvas-card {
+  border: 1px solid #e8d4a6;
+}
 .canvas-wrap[data-theme='light'] .canvas-card {
   border: 1px solid #f7be62;
 }

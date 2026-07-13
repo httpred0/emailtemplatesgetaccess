@@ -83,6 +83,7 @@ Banner CTA (Cream / Dark / Turquoise / Emerald / Sapphire cards) · Numbered car
 Typography per the design system: **Arial everywhere** (32px headings, 16px body,
 buttons included). Primary buttons carry the gold gradient `#DFC8A1 → #F6E6CA`
 on dark, solid ink on light surfaces. The email content sits in a 24px-radius
-card on a theme-colored page (`#0D0D0D` dark / `#E4DDD1` cream / gradient light
-with an amber `#F7BE62` card border); Outlook desktop degrades gracefully
-(square corners, flat colors, no background images).
+card on a theme-colored page (`#0D0D0D` dark / `#E4DDD1` cream / gradient light);
+the card is stroked `#E8D4A6` on cream and `#F7BE62` on light, borderless on dark.
+Outlook desktop degrades gracefully (square corners, flat colors, no background
+images).

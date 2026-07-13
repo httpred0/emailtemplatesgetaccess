@@ -9,10 +9,10 @@ const OUTER_BG: Record<ThemeId, { css: string; solid: string }> = {
   light: { css: 'linear-gradient(80deg, #F4F4F2 50.64%, #F8F8ED 140.84%)', solid: '#F4F4F2' },
 }
 
-/** Light theme frames the card with the brand amber. */
+/** Cream and Light frame the card with a brand stroke; dark is borderless. */
 const CARD_BORDER: Record<ThemeId, string> = {
   dark: 'none',
-  cream: 'none',
+  cream: '1px solid #E8D4A6',
   light: '1px solid #F7BE62',
 }
 
