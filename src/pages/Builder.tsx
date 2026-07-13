@@ -215,6 +215,9 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
               <button className="fmt-btn" title="Bullet list" onClick={() => document.execCommand('insertUnorderedList')}>
                 • List
               </button>
+              <button className="fmt-btn" title="Numbered list" onClick={() => document.execCommand('insertOrderedList')}>
+                1. List
+              </button>
             </div>
           )}
           <div className={`canvas ${viewport === 'mobile' ? 'is-mobile' : ''}`}>

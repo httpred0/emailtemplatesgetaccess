@@ -35,10 +35,10 @@ const section = (bg: string, inner: string, padding: string) =>
 
 /** Pill button per spec: radius 28, pad 16/28, Arial Medium 16, 56px tall. Goes full-width on mobile via .btn-pill. */
 const pillButton = (label: string, url: string, bg: string, solid: string, color: string, border: string, centered = false, slotKey?: string) =>
-  `<table role="presentation" class="btn-pill" cellpadding="0" cellspacing="0" border="0"${centered ? ' align="center" style="margin:0 auto;"' : ''}><tr><td align="center" bgcolor="${solid}" style="background:${bg};border:1px solid ${border};border-radius:28px;mso-padding-alt:16px 28px;"><a href="${escapeHtml(url)}" target="_blank" style="display:inline-block;padding:16px 28px;font-family:${BTN_FONT};font-size:16px;line-height:24px;font-weight:500;color:${color};text-decoration:none;border-radius:28px;">${slotKey ? `<span data-slot="${slotKey}">` : ''}${escapeHtml(label)}${slotKey ? '</span>' : ''}</a></td></tr></table>`
+  `<table role="presentation" class="btn-pill" cellpadding="0" cellspacing="0" border="0"${centered ? ' align="center" style="margin:0 auto;"' : ''}><tr><td align="center" bgcolor="${solid}" style="background:${bg};border:1px solid ${border};border-radius:28px;mso-padding-alt:16px 28px;"><a href="${escapeHtml(url)}" target="_blank" style="display:inline-block;padding:16px 28px;font-family:${BTN_FONT};font-size:16px;line-height:24px;font-weight:600;color:${color};text-decoration:none;border-radius:28px;">${slotKey ? `<span data-slot="${slotKey}">` : ''}${escapeHtml(label)}${slotKey ? '</span>' : ''}</a></td></tr></table>`
 
 const eyebrowHtml = (text: string, color: string, align: 'left' | 'center') =>
-  `<div data-slot="eyebrow" style="font-family:${FONT};font-size:12px;line-height:14px;letter-spacing:-0.3px;text-transform:uppercase;color:${color};text-align:${align};">${textToHtml(text)}</div>`
+  `<div data-slot="eyebrow" style="font-family:${FONT};font-size:12px;line-height:14px;letter-spacing:-0.3px;font-weight:600;text-transform:uppercase;color:${color};text-align:${align};">${textToHtml(text)}</div>`
 
 /** Heading sizes: small 24 / normal 32 (Figma default) / big 44 — 112% line-height, -2.5% tracking. */
 const HEADING_SIZES: Record<string, number> = { small: 24, normal: 32, big: 44 }
@@ -259,21 +259,37 @@ export const MODULES: ModuleDef[] = [
   {
     id: 'callout',
     name: 'Callout',
-    description: 'Outlined highlight box, optionally with a link.',
+    description: 'Outlined highlight box, optionally with a link. Inline-editable text (bold / italic / link).',
     audience: 'all',
     variants: [
       { id: 'regular', name: 'Regular' },
       { id: 'link', name: 'With link' },
     ],
     slots: [
+      { key: 'color', label: 'Color', type: 'select', default: 'brand', options: [
+        { value: 'brand', label: 'Brand' },
+        { value: 'sapphire', label: 'Sapphire' },
+        { value: 'emerald', label: 'Emerald' },
+        { value: 'turquoise', label: 'Turquoise' },
+        { value: 'amber', label: 'Amber' },
+        { value: 'gold', label: 'Gold' },
+        { value: 'amethyst', label: 'Amethyst' },
+        { value: 'salmon', label: 'Salmon' },
+        { value: 'chili', label: 'Chili' },
+      ] },
       { key: 'text', label: 'Text', type: 'longtext', default: 'Your concierge is Elena Marsh.' },
       { key: 'linkLabel', label: 'Link label', type: 'text', default: 'Reply to this email' },
       { key: 'linkUrl', label: 'Link URL', type: 'url', default: 'mailto:concierge@getaccess.com' },
     ],
     toHtml: (v, variant, theme) => {
       const t = T(theme)
+      // Brand keeps the original gold/teal treatment; any accent swaps the bar + tint.
+      const useAccent = v.color && v.color !== 'brand' && (v.color as AccentId) in ACCENTS
+      const a = useAccent ? accentFor(v.color as AccentId, theme) : null
+      const barColor = a ? a.main : t.calloutBorder
+      const bgColor = a ? a.bg : t.calloutBg
       const link = variant === 'link' ? ` <a href="${escapeHtml(v.linkUrl)}" style="color:${t.link};text-decoration:underline;">${textToHtml(v.linkLabel)}</a>` : ''
-      const box = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:${t.calloutBg};border-left:2px solid ${t.calloutBorder};border-radius:0 8px 8px 0;padding:12px 20px;font-family:${FONT};font-size:16px;line-height:24px;color:${t.calloutText};">${textToHtml(v.text)}${link}</td></tr></table>`
+      const box = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="background-color:${bgColor};border-left:2px solid ${barColor};border-radius:0 8px 8px 0;padding:12px 20px;font-family:${FONT};font-size:16px;line-height:24px;color:${t.calloutText};"><span data-slot="text" data-rich="1">${richToHtml(v.text, t.link)}</span>${link}</td></tr></table>`
       return section(t.bg, box, '24px 40px')
     },
   },
@@ -342,6 +358,10 @@ export const MODULES: ModuleDef[] = [
     ],
     slots: [
       { key: 'legal', label: 'Legal text', type: 'longtext', default: 'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.' },
+      { key: 'align', label: 'Alignment', type: 'select', default: 'center', options: [
+        { value: 'center', label: 'Centered' },
+        { value: 'left', label: 'Left' },
+      ] },
       {
         key: 'paddingBottom',
         label: 'Bottom padding',
@@ -357,9 +377,8 @@ export const MODULES: ModuleDef[] = [
       const t = T(theme)
       // Spec: 12px #AAAAAA on dark; darker equivalents on light surfaces for readability.
       const color = theme === 'dark' ? '#AAAAAA' : theme === 'cream' ? '#696967' : '#7A7A75'
-      // Centered-only (mirrors the footer); legacy left/centered ids all resolve here.
       const noStroke = variant.includes('no-stroke')
-      const align = 'center'
+      const align = v.align === 'left' ? 'left' : 'center'
       const topStroke = noStroke ? '' : `border-top:1px solid ${t.footerBorder};`
       const padBottom = v.paddingBottom === '24' ? 24 : 0
       const inner = `<div data-slot="legal" data-rich="1" style="margin:0;font-family:${FONT};font-size:12px;line-height:18px;color:${color};text-align:${align};">${richToHtml(v.legal, T(theme).link)}</div>`
@@ -428,7 +447,7 @@ export const MODULES: ModuleDef[] = [
       const titleColor = isDark ? '#FFFFFF' : '#161616'
       const bodyColor = isDark ? 'rgba(250,245,230,0.8)' : 'rgba(22,22,22,0.8)'
       const pillBorder = isDark ? 'rgba(250,245,230,0.24)' : 'rgba(22,22,22,0.24)'
-      const pill = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="border:1px solid ${pillBorder};border-radius:16px;padding:8px 12px;font-family:${BTN_FONT};font-size:14px;line-height:16px;font-weight:500;text-transform:uppercase;color:${bodyColor};"><span data-slot="eyebrow">${textToHtml(v.eyebrow)}</span></td></tr></table>`
+      const pill = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="border:1px solid ${pillBorder};border-radius:16px;padding:8px 12px;font-family:${BTN_FONT};font-size:14px;line-height:16px;font-weight:600;text-transform:uppercase;color:${bodyColor};"><span data-slot="eyebrow">${textToHtml(v.eyebrow)}</span></td></tr></table>`
       // Spec pairing: dark surface → cream pill; light/colored surface → dark pill.
       const btn = isDark
         ? pillButton(v.ctaLabel, v.ctaUrl, '#E8D4A6', '#E8D4A6', '#1A1A1A', 'rgba(250,240,225,0.04)', false, 'ctaLabel')
