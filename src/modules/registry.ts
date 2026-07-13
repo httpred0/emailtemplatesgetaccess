@@ -276,6 +276,8 @@ export const MODULES: ModuleDef[] = [
         { value: 'amethyst', label: 'Amethyst' },
         { value: 'salmon', label: 'Salmon' },
         { value: 'chili', label: 'Chili' },
+        { value: 'dark', label: 'Dark' },
+        { value: 'cream', label: 'Light' },
       ] },
       { key: 'text', label: 'Text', type: 'longtext', default: 'Your concierge is Elena Marsh.' },
       { key: 'linkLabel', label: 'Link label', type: 'text', default: 'Reply to this email' },
@@ -481,6 +483,10 @@ export const MODULES: ModuleDef[] = [
         { value: 'rounded', label: 'Rounded' },
         { value: 'circle', label: 'Circular' },
       ] },
+      { key: 'fill', label: 'Badge fill', type: 'select', default: 'tinted', options: [
+        { value: 'tinted', label: 'Tinted' },
+        { value: 'none', label: 'None (outline)' },
+      ] },
       { key: 'title', label: 'Title', type: 'text', default: 'Title Goes Here' },
       { key: 'titleSize', label: 'Title size', type: 'select', default: 'normal', options: [
         { value: 'small', label: 'Small (24px)' },
@@ -499,7 +505,9 @@ export const MODULES: ModuleDef[] = [
       const iconId = v.icon || DEFAULT_ICON
       const radius = v.shape === 'circle' ? '19px' : '8px'
       const icon = iconDataUri(iconId, a.main)
-      const badge = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="38" height="38" align="center" valign="middle" style="background-color:${a.bg};border:1px solid ${a.main};border-radius:${radius};"><img src="${icon}" width="22" height="22" alt="" style="display:block;width:22px;height:22px;border:0;" /></td></tr></table>`
+      // Outline fill = transparent badge (only the card glow carries color); tinted = 12% accent.
+      const badgeBg = v.fill === 'none' ? 'transparent' : a.bg
+      const badge = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="38" height="38" align="center" valign="middle" style="background-color:${badgeBg};border:1px solid ${a.main};border-radius:${radius};"><img src="${icon}" width="22" height="22" alt="" style="display:block;width:22px;height:22px;border:0;" /></td></tr></table>`
       const titlePx = HEADING_SIZES[v.titleSize] ?? HEADING_SIZES.normal
       const card = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${cardBg}" style="background-color:${cardBg};${glow}border:1px solid rgba(250,240,225,0.04);border-radius:24px;padding:24px;">
         ${badge}
