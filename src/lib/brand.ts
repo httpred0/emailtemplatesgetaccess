@@ -203,6 +203,18 @@ export function accentFor(id: AccentId, theme: ThemeId): AccentTone {
   return theme === 'dark' ? ACCENTS[id].dark : ACCENTS[id].light
 }
 
+/**
+ * Card-glow gradient for the Icon card. Always uses the VIVID accent hue (not the
+ * deepened text tone), and pushes strength/reach up on cream & light so the accent
+ * reads over a near-white surface the way it does on the dark card.
+ */
+export function accentGlow(id: AccentId, theme: ThemeId): string {
+  const vivid = ACCENTS[id].dark.main // bright hue, good as a background wash on any surface
+  const strength = theme === 'dark' ? 0.22 : 0.55
+  const stop = theme === 'dark' ? 55 : 72
+  return `linear-gradient(to bottom left, ${rgba(vivid, strength)}, rgba(0,0,0,0) ${stop}%)`
+}
+
 /** BannerCTA card fills (from Figma, plus a dark card and the extended palette). */
 export const BANNER_CARDS = {
   cream: { bg: 'linear-gradient(180deg,#DFC8A1 0%,#F6E6CA 100%)', solid: '#E9D6B2' },

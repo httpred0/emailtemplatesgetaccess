@@ -1,10 +1,37 @@
 ﻿import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react'
-import { EmailTemplate, ModuleInstance, TemplateKind, ThemeId } from './types'
+import { EmailTemplate, ModuleInstance, Signature, TemplateKind, ThemeId } from './types'
 import { MODULES, moduleById, defaultValues } from './modules/registry'
 import seedData from './data/seed-templates.json'
 
 const STORAGE_KEY = 'ga-email-templates-v3'
 const OLD_STORAGE_KEYS = ['ga-email-templates-v2', 'ga-email-templates-v1']
+const SIG_STORAGE_KEY = 'ga-email-signatures-v1'
+
+/** Seed signature — the Ivan example; editable so anyone can make their own. */
+function seedSignatures(): Signature[] {
+  return [
+    {
+      id: uid(),
+      label: 'Concierge — Ivan',
+      name: 'Ivan Ruiz Tejero',
+      title: 'Concierge Lead, Get Access',
+      email: 'ivan@concierge.com',
+      website: 'getaccess.com',
+      background: 'none',
+      updatedAt: Date.now(),
+    },
+  ]
+}
+
+function loadSignatures(): Signature[] {
+  try {
+    const raw = localStorage.getItem(SIG_STORAGE_KEY)
+    if (raw) return JSON.parse(raw) as Signature[]
+  } catch {
+    /* corrupted — reseed */
+  }
+  return seedSignatures()
+}
 
 let counter = 0
 export const uid = (): string => `${Date.now().toString(36)}-${(counter++).toString(36)}-${Math.random().toString(36).slice(2, 7)}`
@@ -137,12 +164,18 @@ interface Store {
   updateTemplate: (id: string, patch: Partial<EmailTemplate>) => void
   deleteTemplate: (id: string) => void
   newInstance: typeof instanceOf
+  signatures: Signature[]
+  createSignature: () => Signature
+  duplicateSignature: (id: string) => Signature | undefined
+  updateSignature: (id: string, patch: Partial<Signature>) => void
+  deleteSignature: (id: string) => void
 }
 
 const StoreCtx = createContext<Store | null>(null)
 
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [templates, setTemplates] = useState<EmailTemplate[]>(loadTemplates)
+  const [signatures, setSignatures] = useState<Signature[]>(loadSignatures)
 
   useEffect(() => {
     try {
@@ -151,6 +184,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       /* quota exceeded (large uploaded images) — keep working in memory */
     }
   }, [templates])
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(SIG_STORAGE_KEY, JSON.stringify(signatures))
+    } catch {
+      /* ignore */
+    }
+  }, [signatures])
 
   const store = useMemo<Store>(
     () => ({
@@ -186,8 +227,33 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setTemplates((p) => p.map((t) => (t.id === id ? { ...t, ...patch, updatedAt: Date.now() } : t))),
       deleteTemplate: (id) => setTemplates((p) => p.filter((t) => t.id !== id)),
       newInstance: instanceOf,
+      signatures,
+      createSignature: () => {
+        const s: Signature = {
+          id: uid(),
+          label: 'Untitled signature',
+          name: 'Full Name',
+          title: 'Role, Get Access',
+          email: 'name@getaccess.com',
+          website: 'getaccess.com',
+          background: 'none',
+          updatedAt: Date.now(),
+        }
+        setSignatures((p) => [s, ...p])
+        return s
+      },
+      duplicateSignature: (id) => {
+        const src = signatures.find((s) => s.id === id)
+        if (!src) return undefined
+        const copy: Signature = { ...src, id: uid(), label: `${src.label} (copy)`, updatedAt: Date.now() }
+        setSignatures((p) => [copy, ...p])
+        return copy
+      },
+      updateSignature: (id, patch) =>
+        setSignatures((p) => p.map((s) => (s.id === id ? { ...s, ...patch, updatedAt: Date.now() } : s))),
+      deleteSignature: (id) => setSignatures((p) => p.filter((s) => s.id !== id)),
     }),
-    [templates],
+    [templates, signatures],
   )
 
   return <StoreCtx.Provider value={store}>{children}</StoreCtx.Provider>

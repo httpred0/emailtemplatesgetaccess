@@ -55,4 +55,18 @@ export interface EmailTemplate {
   updatedAt: number
 }
 
+export type SignatureBg = 'dark' | 'cream' | 'light' | 'none'
+
+export interface Signature {
+  id: string
+  label: string // internal name for the entry (not shown in the signature itself)
+  name: string
+  title: string
+  email: string
+  website: string
+  background: SignatureBg
+  logo?: 'gold' | 'ink' // logomark override; falls back to the background's default
+  updatedAt: number
+}
+
 export type { ThemeId }

@@ -338,6 +338,24 @@ button.card__name:hover { color: var(--accent-hover); }
 }
 @media (min-width: 960px) {
   .builder { grid-template-columns: 256px minmax(0, 1fr) 304px; }
+  .builder--signature { grid-template-columns: minmax(0, 1fr) 320px; }
+}
+
+.sig-preview {
+  width: 520px;
+  max-width: 100%;
+}
+.card__preview--sig {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: 160px;
+}
+.card__preview--sig > div {
+  transform: scale(0.82);
+  transform-origin: center;
+  pointer-events: none;
 }
 
 .pane {

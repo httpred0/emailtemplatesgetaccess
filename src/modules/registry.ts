@@ -7,6 +7,7 @@ import {
   ACCENTS,
   AccentId,
   accentFor,
+  accentGlow,
   BANNER_CARDS,
   BannerCardId,
   FONT,
@@ -497,21 +498,30 @@ export const MODULES: ModuleDef[] = [
     ],
     toHtml: (v, variant, theme) => {
       const t = T(theme)
-      const a = accentFor((variant as AccentId) in ACCENTS ? (variant as AccentId) : 'sapphire', theme)
-      // Card surface per Figma: #161616 dark / #FFFBF0 cream / #F5F5F2 light,
-      // with the accent "glow" (20% blurred ellipse, top-right) approximated as a gradient.
+      const accentId = (variant as AccentId) in ACCENTS ? (variant as AccentId) : 'sapphire'
+      const a = accentFor(accentId, theme)
+      const vivid = ACCENTS[accentId].dark.main // true brand hue, used for fills/glow on any surface
+      // Card surface: #161616 dark / #F5F0E1 cream / #F5F5F2 light, with the accent glow top-right.
       const surface = theme === 'dark' ? '#161616' : theme === 'cream' ? '#F5F0E1' : '#F5F5F2'
-      const glow = `background-image:linear-gradient(to bottom left, ${a.glow}, rgba(0,0,0,0) 55%);`
+      const glow = `background-image:${accentGlow(accentId, theme)};`
       const iconId = v.icon || DEFAULT_ICON
       const radius = v.shape === 'circle' ? '19px' : '8px'
-      const icon = iconDataUri(iconId, a.main)
-      const badge = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="38" height="38" align="center" valign="middle" style="background-color:${a.bg};border:1px solid ${a.main};border-radius:${radius};"><img src="${icon}" width="22" height="22" alt="" style="display:block;width:22px;height:22px;border:0;" /></td></tr></table>`
-      const titlePx = HEADING_SIZES[v.titleSize] ?? HEADING_SIZES.normal
-      // Outline card = transparent fill (only the glow shows over the email surface) + full-opacity accent stroke.
-      const outline = v.fill === 'none'
+      const light = theme !== 'dark'
+      // Cream/Light cards are always fill-less (a filled near-white card is pointless on a
+      // near-white page); the Filled/None toggle only affects the dark card.
+      const outline = v.fill === 'none' || light
       const cardBg = outline ? 'transparent' : surface
       const cardBgAttr = outline ? t.bg : surface
-      const cardBorder = outline ? a.main : 'rgba(250,240,225,0.04)'
+      // Dark filled card keeps the near-invisible hairline; cream/light and any outline
+      // card get a full-opacity vivid accent stroke.
+      const cardBorder = outline ? vivid : 'rgba(250,240,225,0.04)'
+      // Dark: tinted badge + accent icon. Cream/Light: solid VIVID-accent badge with
+      // the icon knocked out in the module's background color.
+      const badgeFill = light ? vivid : a.bg
+      const iconColor = light ? (outline ? t.bg : surface) : a.main
+      const icon = iconDataUri(iconId, iconColor)
+      const badge = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="38" height="38" align="center" valign="middle" style="background-color:${badgeFill};border:1px solid ${light ? vivid : a.main};border-radius:${radius};"><img src="${icon}" width="22" height="22" alt="" style="display:block;width:22px;height:22px;border:0;" /></td></tr></table>`
+      const titlePx = HEADING_SIZES[v.titleSize] ?? HEADING_SIZES.normal
       const card = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${cardBgAttr}" style="background-color:${cardBg};${glow}border:1px solid ${cardBorder};border-radius:24px;padding:24px;">
         ${badge}
         <h3 data-slot="title" style="margin:16px 0 8px;font-family:${FONT};font-size:${titlePx}px;line-height:${Math.round(titlePx * 1.12)}px;letter-spacing:${-Math.round(titlePx * 2.5) / 100}px;font-weight:normal;color:${t.heading};">${textToHtml(v.title)}</h3>
