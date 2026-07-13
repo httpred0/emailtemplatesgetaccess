@@ -208,9 +208,10 @@
         "variantId": "sapphire",
         "color": "dark",
         "values": {
-          "number": "1",
           "title": "Title Goes Here",
-          "text": "A short paragraph describing this step."
+          "text": "A short paragraph describing this step.",
+          "icon": "circle-number-1",
+          "shape": "rounded"
         }
       },
       {
@@ -282,30 +283,30 @@
         "values": {}
       },
       {
-        "uid": "mrds7srz-2-h50yl",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrds7srz-3-kad1s",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrds7srz-2-h50yl",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
-    "updatedAt": 1783618645877
+    "updatedAt": 1783944676368
   },
   {
     "name": "Welcome",
@@ -365,9 +366,10 @@
         "variantId": "sapphire",
         "color": "dark",
         "values": {
-          "number": "1",
           "title": "Browse live deals",
-          "text": "See what’s open right now, with terms and timelines up front."
+          "text": "See what’s open right now, with terms and timelines up front.",
+          "icon": "circle-number-1",
+          "shape": "rounded"
         }
       },
       {
@@ -376,9 +378,10 @@
         "variantId": "emerald",
         "color": "dark",
         "values": {
-          "number": "2",
           "title": "Reserve your allocation",
-          "text": "Move early — allocations are first come, first served."
+          "text": "Move early — allocations are first come, first served.",
+          "icon": "circle-number-2",
+          "shape": "rounded"
         }
       },
       {
@@ -387,9 +390,10 @@
         "variantId": "turquoise",
         "color": "dark",
         "values": {
-          "number": "3",
           "title": "Track it in the app",
-          "text": "Updates, documents and your portfolio, all in your pocket."
+          "text": "Updates, documents and your portfolio, all in your pocket.",
+          "icon": "circle-number-3",
+          "shape": "rounded"
         }
       },
       {
@@ -413,31 +417,31 @@
         "values": {}
       },
       {
-        "uid": "mrdhmpev-1x-1yf18",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-1y-yssnn",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-1x-1yf18",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-1z-cp1rl",
-    "updatedAt": 1783617710015
+    "updatedAt": 1783944230125
   },
   {
     "name": "New Deal",
@@ -546,31 +550,31 @@
         }
       },
       {
-        "uid": "mrdhmpev-28-8h8ev",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-29-tlerm",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-28-8h8ev",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-2a-vsb4t",
-    "updatedAt": 1783618070410
+    "updatedAt": 1783944230125
   },
   {
     "name": "New Contributor",
@@ -649,31 +653,31 @@
         }
       },
       {
-        "uid": "mrdhmpev-2f-h7ip7",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-2g-0b7to",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-2f-h7ip7",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-2h-7ai7s",
-    "updatedAt": 1783617884188
+    "updatedAt": 1783944230125
   },
   {
     "name": "Password Reset",
@@ -732,31 +736,31 @@
         }
       },
       {
-        "uid": "mrdhmpev-2o-cc6ek",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-2p-p1w89",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-2o-cc6ek",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-2q-7es26",
-    "updatedAt": 1783617892924
+    "updatedAt": 1783944230125
   },
   {
     "name": "Verify Email",
@@ -814,31 +818,31 @@
         }
       },
       {
-        "uid": "mrdhmpev-2x-yz3x9",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-2y-qokxk",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-2x-yz3x9",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-2z-b2bjb",
-    "updatedAt": 1783618030561
+    "updatedAt": 1783944230125
   },
   {
     "name": "Application Received",
@@ -903,31 +907,31 @@
         }
       },
       {
-        "uid": "mrdhmpev-36-794a6",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-37-lu0f3",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-36-794a6",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-38-78f5u",
-    "updatedAt": 1783618019833
+    "updatedAt": 1783944230125
   },
   {
     "name": "Approved — Download the app",
@@ -986,30 +990,30 @@
         }
       },
       {
-        "uid": "mrdhmpev-3f-8thq0",
-        "moduleId": "footer",
-        "variantId": "default",
-        "color": "dark",
-        "values": {
-          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
-          "contact": "Questions? concierge@getaccess.com",
-          "privacyUrl": "https://getaccess.com/privacy",
-          "termsUrl": "https://getaccess.com/terms",
-          "unsubUrl": "https://getaccess.com/unsubscribe"
-        }
-      },
-      {
         "uid": "mrdhmpev-3g-ogrd4",
         "moduleId": "disclosure",
         "variantId": "default",
         "color": "dark",
         "values": {
-          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.",
+          "legal": "For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.",
           "copyright": "© 2026 Get Access. All rights reserved."
+        }
+      },
+      {
+        "uid": "mrdhmpev-3f-8thq0",
+        "moduleId": "footer",
+        "variantId": "no-stroke",
+        "color": "dark",
+        "values": {
+          "address": "2108 N ST #15558\nSacramento, CA 95816 USA",
+          "contact": "concierge@getaccess.com",
+          "privacyUrl": "https://getaccess.com/privacy",
+          "termsUrl": "https://getaccess.com/terms",
+          "unsubUrl": "https://getaccess.com/unsubscribe"
         }
       }
     ],
     "id": "mrdhmpev-3h-kuw95",
-    "updatedAt": 1783618050250
+    "updatedAt": 1783944230125
   }
 ]

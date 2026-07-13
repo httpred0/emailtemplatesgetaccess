@@ -5,7 +5,7 @@ import { ThemeId, escapeHtml } from './brand'
 /** Outer canvas behind the 600px email card, per theme. `solid` is the Outlook/bgcolor fallback. */
 const OUTER_BG: Record<ThemeId, { css: string; solid: string }> = {
   dark: { css: '#0D0D0D', solid: '#0D0D0D' },
-  cream: { css: '#E4DDD1', solid: '#E4DDD1' },
+  cream: { css: '#FAFAFA', solid: '#FAFAFA' },
   light: { css: 'linear-gradient(80deg, #F4F4F2 50.64%, #F8F8ED 140.84%)', solid: '#F4F4F2' },
 }
 
@@ -23,14 +23,6 @@ export function renderModuleBlock(inst: ModuleInstance): string {
   return mod.toHtml(values, inst.variantId, inst.color ?? 'dark')
 }
 
-/** The disclosure sits OUTSIDE the rounded email card, on the page background. */
-export function splitModules(modules: ModuleInstance[]): { card: ModuleInstance[]; tail: ModuleInstance[] } {
-  return {
-    card: modules.filter((m) => m.moduleId !== 'disclosure'),
-    tail: modules.filter((m) => m.moduleId === 'disclosure'),
-  }
-}
-
 export const CARD_RADIUS = 24
 
 const roundedCard = (inner: string, theme: ThemeId) =>
@@ -46,6 +38,16 @@ function emailShell(title: string, preheader: string, theme: ThemeId, bodyBlocks
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>${escapeHtml(title)}</title>
+  <style>
+    /* Large-tier CTAs go full-width on mobile; unsupported clients keep the 56px content-width pill. */
+    @media only screen and (max-width: 480px) {
+      table.btn-pill { width: 100% !important; }
+      table.btn-pill a { display: block !important; text-align: center !important; }
+      table.btn-pair { width: 100% !important; }
+      table.btn-pair > tbody > tr > td { display: block !important; width: 100% !important; }
+      table.btn-pair td.btn-gap { height: 12px !important; width: auto !important; line-height: 12px !important; }
+    }
+  </style>
 </head>
 <body style="margin:0;padding:0;background-color:${OUTER_BG[theme].solid};-webkit-text-size-adjust:100%;">
   <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}</div>
@@ -66,24 +68,23 @@ ${bodyBlocks}
 </html>`
 }
 
+/** Editing hooks (data-slot/data-rich) are canvas-only — strip them from shipped HTML. */
+const stripEditingAttrs = (html: string) => html.replace(/ data-(slot|rich)="[^"]*"/g, '')
+
 export function renderEmailHtml(t: EmailTemplate): string {
   const theme = t.theme ?? 'dark'
-  const { card, tail } = splitModules(t.modules)
-  const blocks = `${roundedCard(card.map(renderModuleBlock).join('\n'), theme)}\n${tail.map(renderModuleBlock).join('\n')}`
-  return emailShell(t.subject || t.name, t.preheader, theme, blocks)
+  const blocks = roundedCard(t.modules.map(renderModuleBlock).join('\n'), theme)
+  return emailShell(t.subject || t.name, t.preheader, theme, stripEditingAttrs(blocks))
 }
 
 export function renderSingleModuleHtml(inst: ModuleInstance, name: string): string {
   const theme = inst.color ?? 'dark'
-  const block = inst.moduleId === 'disclosure' ? renderModuleBlock(inst) : roundedCard(renderModuleBlock(inst), theme)
-  return emailShell(name, '', theme, block)
+  return emailShell(name, '', theme, stripEditingAttrs(roundedCard(renderModuleBlock(inst), theme)))
 }
 
 /** Bare-canvas markup for gallery thumbnails (no <html> wrapper). */
 export function renderCanvasHtml(t: EmailTemplate): string {
-  const theme = t.theme ?? 'dark'
-  const { card, tail } = splitModules(t.modules)
-  return `${roundedCard(card.map(renderModuleBlock).join('\n'), theme)}\n${tail.map(renderModuleBlock).join('\n')}`
+  return roundedCard(t.modules.map(renderModuleBlock).join('\n'), t.theme ?? 'dark')
 }
 
 export function downloadHtml(filename: string, html: string): void {

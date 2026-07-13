@@ -10,7 +10,7 @@ export default function App() {
 
   return (
     <StoreProvider>
-      <div className="app">
+      <div className={view.page === 'builder' ? 'app app--builder' : 'app'}>
         {view.page === 'home' ? (
           <Home onOpen={(id) => setView({ page: 'builder', templateId: id })} />
         ) : (

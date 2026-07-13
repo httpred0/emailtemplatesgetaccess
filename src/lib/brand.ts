@@ -52,16 +52,16 @@ export const THEMES: Record<ThemeId, Theme> = {
     muted: '#A6A6A1',
     note: '#7A7A75',
     divider: '#2B2B29',
-    link: '#ECD4AB',
+    link: '#2CD4D4',
     codeBg: 'rgba(247,240,219,0.04)',
     codeBorder: 'rgba(250,240,225,0.15)',
     codeChar: '#FFFFFF',
     calloutBg: 'rgba(235,212,171,0.04)',
     calloutBorder: '#ECD4AB',
     calloutText: '#A6A6A1',
-    btnPrimaryBg: 'linear-gradient(180deg,#DFC8A1 0%,#F6E6CA 100%)',
-    btnPrimarySolid: '#E9D6B2',
-    btnPrimaryText: '#0D0D0D',
+    btnPrimaryBg: '#E8D4A6',
+    btnPrimarySolid: '#E8D4A6',
+    btnPrimaryText: '#1A1A1A',
     btnSecondaryBg: 'rgba(247,240,219,0.08)',
     btnSecondaryText: '#ECD4AB',
     btnSecondaryBorder: 'rgba(250,240,225,0.15)',
@@ -81,16 +81,16 @@ export const THEMES: Record<ThemeId, Theme> = {
     muted: '#3D3D3B',
     note: '#696967',
     divider: '#D1D1CC',
-    link: '#308081',
+    link: '#1A1A1A',
     codeBg: '#F4EBDD',
     codeBorder: '#A6A6A1',
     codeChar: '#0D0D0D',
     calloutBg: 'rgba(37,170,170,0.08)',
     calloutBorder: '#25AAAA',
     calloutText: '#3D3D3B',
-    btnPrimaryBg: '#161616',
-    btnPrimarySolid: '#161616',
-    btnPrimaryText: '#FFFFFF',
+    btnPrimaryBg: '#1A1A1A',
+    btnPrimarySolid: '#1A1A1A',
+    btnPrimaryText: '#FAF5E6',
     btnSecondaryBg: 'rgba(22,22,22,0.12)',
     btnSecondaryText: '#0D0D0D',
     btnSecondaryBorder: 'rgba(22,22,22,0.0)',
@@ -110,16 +110,16 @@ export const THEMES: Record<ThemeId, Theme> = {
     muted: '#3D3D3B',
     note: '#696967',
     divider: '#D1D1CC',
-    link: '#308081',
+    link: '#1A1A1A',
     codeBg: '#FFFFFF',
     codeBorder: '#A6A6A1',
     codeChar: '#0D0D0D',
     calloutBg: 'rgba(37,170,170,0.08)',
     calloutBorder: '#25AAAA',
     calloutText: '#3D3D3B',
-    btnPrimaryBg: '#161616',
-    btnPrimarySolid: '#161616',
-    btnPrimaryText: '#FFFFFF',
+    btnPrimaryBg: '#1A1A1A',
+    btnPrimarySolid: '#1A1A1A',
+    btnPrimaryText: '#FAF5E6',
     btnSecondaryBg: 'rgba(22,22,22,0.12)',
     btnSecondaryText: '#0D0D0D',
     btnSecondaryBorder: 'rgba(22,22,22,0.0)',
@@ -144,7 +144,29 @@ export interface AccentTone {
   glow: string
   deep: string
 }
-export const ACCENTS: Record<'sapphire' | 'emerald' | 'turquoise', { dark: AccentTone; light: AccentTone }> = {
+
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace('#', '')
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)]
+}
+function rgba(hex: string, a: number): string {
+  const [r, g, b] = hexToRgb(hex)
+  return `rgba(${r},${g},${b},${a})`
+}
+function darken(hex: string, amount: number): string {
+  const [r, g, b] = hexToRgb(hex).map((c) => Math.round(c * (1 - amount)))
+  return `#${[r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('').toUpperCase()}`
+}
+/** Build a surface-aware accent from a single brand hex; light-surface tone is darkened for contrast. */
+function accent(mainDark: string, mainLight = darken(mainDark, 0.28)): { dark: AccentTone; light: AccentTone } {
+  return {
+    dark: { main: mainDark, bg: rgba(mainDark, 0.12), glow: rgba(mainDark, 0.2), deep: mainDark },
+    light: { main: mainLight, bg: rgba(mainDark, 0.12), glow: rgba(mainLight, 0.2), deep: mainLight },
+  }
+}
+
+export const ACCENTS = {
+  // Figma-tuned trio (hand values preserved).
   sapphire: {
     dark: { main: '#2DAEDE', bg: 'rgba(42,140,174,0.12)', glow: 'rgba(45,174,222,0.2)', deep: '#2DAEDE' },
     light: { main: '#1884AC', bg: 'rgba(24,132,172,0.12)', glow: 'rgba(24,132,172,0.2)', deep: '#1884AC' },
@@ -157,26 +179,56 @@ export const ACCENTS: Record<'sapphire' | 'emerald' | 'turquoise', { dark: Accen
     dark: { main: '#47CCBF', bg: 'rgba(37,170,170,0.12)', glow: 'rgba(71,204,191,0.2)', deep: '#25AAAA' },
     light: { main: '#25AAAA', bg: 'rgba(37,170,170,0.12)', glow: 'rgba(37,170,170,0.2)', deep: '#308081' },
   },
-} as const
+  // Extended palette (derived from brand hexes).
+  amber: accent('#F27E49'),
+  gold: accent('#F7BE62'),
+  amethyst: accent('#8F7997'),
+  salmon: accent('#FF717F'),
+  chili: accent('#E53622'),
+  // Neutral treatments (no theme adaptation): ink for light surfaces, cream for dark.
+  dark: {
+    dark: { main: '#2B2B29', bg: 'rgba(22,22,22,0.06)', glow: 'rgba(22,22,22,0.2)', deep: '#2B2B29' },
+    light: { main: '#2B2B29', bg: 'rgba(22,22,22,0.06)', glow: 'rgba(22,22,22,0.2)', deep: '#2B2B29' },
+  },
+  cream: {
+    dark: { main: '#E8D4A6', bg: 'rgba(232,212,166,0.12)', glow: 'rgba(232,212,166,0.2)', deep: '#E8D4A6' },
+    light: { main: '#E8D4A6', bg: 'rgba(232,212,166,0.12)', glow: 'rgba(232,212,166,0.2)', deep: '#E8D4A6' },
+  },
+} as const satisfies Record<string, { dark: AccentTone; light: AccentTone }>
+
+export type AccentId = keyof typeof ACCENTS
 
 export function accentFor(id: AccentId, theme: ThemeId): AccentTone {
   return theme === 'dark' ? ACCENTS[id].dark : ACCENTS[id].light
 }
-export type AccentId = keyof typeof ACCENTS
 
-/** BannerCTA card fills (from Figma, plus a dark card). */
+/** BannerCTA card fills (from Figma, plus a dark card and the extended palette). */
 export const BANNER_CARDS = {
   cream: { bg: 'linear-gradient(180deg,#DFC8A1 0%,#F6E6CA 100%)', solid: '#E9D6B2' },
   dark: { bg: '#161616', solid: '#161616' },
   turquoise: { bg: '#47CCBF', solid: '#47CCBF' },
   emerald: { bg: '#B2DF99', solid: '#B2DF99' },
   sapphire: { bg: '#2DAEDE', solid: '#2DAEDE' },
+  amber: { bg: '#F27E49', solid: '#F27E49' },
+  gold: { bg: '#F7BE62', solid: '#F7BE62' },
+  amethyst: { bg: '#8F7997', solid: '#8F7997' },
+  salmon: { bg: '#FF717F', solid: '#FF717F' },
+  chili: { bg: '#E53622', solid: '#E53622' },
 } as const
 export type BannerCardId = keyof typeof BANNER_CARDS
+
+/** Perceived brightness of a solid hex (0–1); used to pick ink vs cream content on colored cards. */
+export function isLightHex(hex: string): boolean {
+  const [r, g, b] = hexToRgb(hex)
+  return (0.299 * r + 0.587 * g + 0.114 * b) / 255 > 0.5
+}
 
 /** Everything email-side renders in Arial — the email-safe brand typeface. */
 export const FONT = 'Arial, Helvetica, sans-serif'
 export const BTN_FONT = FONT
+
+/** Gold 300 — the designated accent for eyebrow labels across the system (all themes). */
+export const EYEBROW_GOLD = '#C0A968'
 
 /** Logo lockup (from the brand SVG package) as a data URI — gold gradient for dark, ink for light surfaces. */
 export function logoDataUri(kind: 'gold' | 'ink'): string {

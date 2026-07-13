@@ -44,6 +44,8 @@ input, textarea, select { font-family: var(--font); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
 
 .app { min-height: 100%; display: flex; flex-direction: column; }
+/* Builder is viewport-locked: nav stays put, each panel scrolls independently. */
+.app--builder { height: 100vh; height: 100dvh; overflow: hidden; }
 
 /* ————— buttons ————— */
 /* Pill buttons, mirroring the email button system: Arial, gold gradient primary, cream-tinted secondary. */
@@ -332,6 +334,7 @@ button.card__name:hover { color: var(--accent-hover); }
   grid-template-columns: 1fr;
   flex: 1;
   min-height: 0;
+  overflow: hidden;
 }
 @media (min-width: 960px) {
   .builder { grid-template-columns: 256px minmax(0, 1fr) 304px; }
@@ -389,7 +392,39 @@ button.card__name:hover { color: var(--accent-hover); }
   flex-direction: column;
   align-items: center;
 }
-.canvas-wrap[data-theme='cream'] { background: #e4ddd1; }
+.canvas-wrap[data-theme='cream'] { background: #fafafa; }
+
+/* inline-editing format bar */
+.fmt-bar {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+.fmt-bar__hint { font-size: 11px; color: var(--text-3); padding-right: 6px; }
+.fmt-btn {
+  min-width: 28px;
+  height: 26px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--text);
+  font-size: 12px;
+  font-family: var(--font);
+}
+.fmt-btn:hover { background: var(--surface-2); border-color: var(--border); }
 .canvas-wrap[data-theme='light'] { background: linear-gradient(80deg, #f4f4f2 50.64%, #f8f8ed 140.84%); }
 .canvas {
   width: 600px;
@@ -397,6 +432,12 @@ button.card__name:hover { color: var(--accent-hover); }
   transition: width 200ms var(--ease);
 }
 .canvas.is-mobile { width: 375px; }
+/* Mirror the export's mobile media query: full-width CTAs in the 375px preview. */
+.canvas.is-mobile table.btn-pill { width: 100% !important; }
+.canvas.is-mobile table.btn-pill a { display: block !important; text-align: center !important; }
+.canvas.is-mobile table.btn-pair { width: 100% !important; }
+.canvas.is-mobile table.btn-pair > tbody > tr > td { display: block !important; width: 100% !important; }
+.canvas.is-mobile table.btn-pair td.btn-gap { height: 12px !important; width: auto !important; line-height: 12px !important; }
 .canvas-card {
   border-radius: 24px;
   overflow: hidden;
@@ -418,8 +459,13 @@ button.card__name:hover { color: var(--accent-hover); }
   position: absolute;
   inset: 0;
   border: 1px solid transparent;
-  cursor: pointer;
+  pointer-events: none; /* clicks go to the content underneath (inline editing) */
   transition: border-color 120ms var(--ease);
+}
+.canvas-block { cursor: pointer; }
+.canvas-block [data-slot][contenteditable='true']:focus {
+  box-shadow: 0 0 0 1px var(--accent) inset;
+  border-radius: 2px;
 }
 .canvas-block:hover .canvas-block__overlay { border-color: rgba(192, 154, 106, 0.55); }
 .canvas-block.is-selected .canvas-block__overlay {

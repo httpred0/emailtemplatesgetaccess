@@ -1,9 +1,10 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ModuleInstance, SlotDef, ThemeId } from '../types'
 import { MODULES, moduleById } from '../modules/registry'
 import { THEMES } from '../lib/brand'
+import { serializeRichElement } from '../lib/rich'
 import { renderModuleBlock, renderEmailHtml, downloadHtml, slugify, renderSingleModuleHtml } from '../lib/exportHtml'
-import { useStore } from '../store'
+import { useStore, reorderDisclosure } from '../store'
 
 const THEME_IDS: ThemeId[] = ['dark', 'cream', 'light']
 
@@ -26,7 +27,8 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
   const selected = template.modules.find((m) => m.uid === selectedUid) ?? null
   const availableModules = MODULES.filter((m) => template.kind === 'marketing' || m.audience === 'all')
 
-  const patchModules = (modules: ModuleInstance[]) => updateTemplate(template.id, { modules })
+  // the disclosure always stays directly before the footer, whatever the edit
+  const patchModules = (modules: ModuleInstance[]) => updateTemplate(template.id, { modules: reorderDisclosure(modules) })
 
   const setTheme = (theme: ThemeId) => {
     updateTemplate(template.id, {
@@ -38,7 +40,7 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
   const addModule = (moduleId: string) => {
     const inst = newInstance(moduleId, template.theme)
     const mods = [...template.modules]
-    // keep footer/disclosure at the end
+    // keep the legal tail (disclosure → footer) at the end
     let insertAt = mods.length
     while (insertAt > 0 && ['footer', 'disclosure'].includes(mods[insertAt - 1].moduleId) && !['footer', 'disclosure'].includes(moduleId)) {
       insertAt--
@@ -75,6 +77,10 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
   const updateSelected = (patch: Partial<ModuleInstance>) => {
     if (!selected) return
     patchModules(template.modules.map((m) => (m.uid === selected.uid ? { ...m, ...patch } : m)))
+  }
+
+  const updateInstanceValue = (uid: string, key: string, value: string) => {
+    patchModules(template.modules.map((m) => (m.uid === uid ? { ...m, values: { ...m.values, [key]: value } } : m)))
   }
 
   const exportTemplate = () => {
@@ -187,50 +193,51 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
         </aside>
 
         <div className="canvas-wrap" onClick={() => setSelectedUid(null)} data-theme={template.theme}>
+          {selected && (
+            <div className="fmt-bar" onMouseDown={(e) => e.preventDefault()} onClick={(e) => e.stopPropagation()}>
+              <span className="fmt-bar__hint">Select text in the preview, then:</span>
+              <button className="fmt-btn" title="Bold" onClick={() => document.execCommand('bold')}>
+                <b>B</b>
+              </button>
+              <button className="fmt-btn" title="Italic" onClick={() => document.execCommand('italic')}>
+                <i>I</i>
+              </button>
+              <button
+                className="fmt-btn"
+                title="Link"
+                onClick={() => {
+                  const url = prompt('Link URL (https://…)')
+                  if (url) document.execCommand('createLink', false, url)
+                }}
+              >
+                Link
+              </button>
+              <button className="fmt-btn" title="Bullet list" onClick={() => document.execCommand('insertUnorderedList')}>
+                • List
+              </button>
+            </div>
+          )}
           <div className={`canvas ${viewport === 'mobile' ? 'is-mobile' : ''}`}>
             {template.modules.length === 0 && (
               <div className="canvas-empty">Add a module from the left to begin.</div>
             )}
             <div className="canvas-card">
-              {template.modules
-                .filter((m) => m.moduleId !== 'disclosure')
-                .map((inst) => {
-                  const i = template.modules.findIndex((m) => m.uid === inst.uid)
-                  return (
-                    <CanvasBlock
-                      key={inst.uid}
-                      inst={inst}
-                      isSelected={inst.uid === selectedUid}
-                      isFirst={i === 0}
-                      isLast={i === template.modules.length - 1}
-                      onSelect={() => setSelectedUid(inst.uid)}
-                      onMoveUp={() => move(inst.uid, -1)}
-                      onMoveDown={() => move(inst.uid, 1)}
-                      onDuplicate={() => duplicate(inst.uid)}
-                      onRemove={() => remove(inst.uid)}
-                    />
-                  )
-                })}
+              {template.modules.map((inst, i) => (
+                <CanvasBlock
+                  key={inst.uid}
+                  inst={inst}
+                  isSelected={inst.uid === selectedUid}
+                  isFirst={i === 0}
+                  isLast={i === template.modules.length - 1}
+                  onSelect={() => setSelectedUid(inst.uid)}
+                  onMoveUp={() => move(inst.uid, -1)}
+                  onMoveDown={() => move(inst.uid, 1)}
+                  onDuplicate={() => duplicate(inst.uid)}
+                  onRemove={() => remove(inst.uid)}
+                  onValue={(key, value) => updateInstanceValue(inst.uid, key, value)}
+                />
+              ))}
             </div>
-            {template.modules
-              .filter((m) => m.moduleId === 'disclosure')
-              .map((inst) => {
-                const i = template.modules.findIndex((m) => m.uid === inst.uid)
-                return (
-                  <CanvasBlock
-                    key={inst.uid}
-                    inst={inst}
-                    isSelected={inst.uid === selectedUid}
-                    isFirst={i === 0}
-                    isLast={i === template.modules.length - 1}
-                    onSelect={() => setSelectedUid(inst.uid)}
-                    onMoveUp={() => move(inst.uid, -1)}
-                    onMoveDown={() => move(inst.uid, 1)}
-                    onDuplicate={() => duplicate(inst.uid)}
-                    onRemove={() => remove(inst.uid)}
-                  />
-                )
-              })}
           </div>
         </div>
 
@@ -269,6 +276,7 @@ function CanvasBlock({
   onMoveDown,
   onDuplicate,
   onRemove,
+  onValue,
 }: {
   inst: ModuleInstance
   isSelected: boolean
@@ -279,9 +287,32 @@ function CanvasBlock({
   onMoveDown: () => void
   onDuplicate: () => void
   onRemove: () => void
+  onValue: (key: string, value: string) => void
 }) {
   const mod = moduleById(inst.moduleId)
   const html = useMemo(() => renderModuleBlock(inst), [inst])
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  // Inline editing: text elements carry data-slot; they become editable while the block is selected.
+  useEffect(() => {
+    const root = contentRef.current
+    if (!root) return
+    root.querySelectorAll<HTMLElement>('[data-slot]').forEach((el) => {
+      el.setAttribute('contenteditable', isSelected ? 'true' : 'false')
+      el.style.outline = 'none'
+      if (isSelected) el.style.cursor = 'text'
+      else el.style.removeProperty('cursor')
+    })
+  }, [html, isSelected])
+
+  const syncEdit = (target: EventTarget | null) => {
+    const el = (target as HTMLElement | null)?.closest?.('[data-slot]') as HTMLElement | null
+    if (!el || !el.dataset.edited) return
+    delete el.dataset.edited
+    const key = el.dataset.slot!
+    const value = el.dataset.rich ? serializeRichElement(el) : el.innerText.replace(/\n+$/, '')
+    if (value !== (inst.values[key] ?? '')) onValue(key, value)
+  }
 
   return (
     <div
@@ -291,7 +322,19 @@ function CanvasBlock({
         onSelect()
       }}
     >
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <div
+        ref={contentRef}
+        dangerouslySetInnerHTML={{ __html: html }}
+        onInput={(e) => {
+          const el = (e.target as HTMLElement).closest?.('[data-slot]') as HTMLElement | null
+          if (el) el.dataset.edited = '1'
+        }}
+        onBlur={(e) => syncEdit(e.target)}
+        onClickCapture={(e) => {
+          // links in the canvas must never navigate
+          if ((e.target as HTMLElement).closest?.('a')) e.preventDefault()
+        }}
+      />
       <div className="canvas-block__overlay" />
       <span className="canvas-block__label">{mod?.name ?? inst.moduleId}</span>
       <div className="canvas-block__tools" onClick={(e) => e.stopPropagation()}>

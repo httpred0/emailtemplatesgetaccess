@@ -36,23 +36,73 @@ function seedTemplates(): EmailTemplate[] {
   return (seedData as EmailTemplate[]).map((t) => ({ ...t, updatedAt: now }))
 }
 
+/** Spec order: the disclosure (SEC-grade legal) comes BEFORE the footer, not after it. */
+export function reorderDisclosure(mods: ModuleInstance[]): ModuleInstance[] {
+  const footerIdx = mods.findIndex((m) => m.moduleId === 'footer')
+  if (footerIdx === -1) return mods
+  const late = mods.filter((m, i) => m.moduleId === 'disclosure' && i > footerIdx)
+  if (!late.length) return mods
+  const rest = mods.filter((m) => !late.includes(m))
+  rest.splice(rest.findIndex((m) => m.moduleId === 'footer'), 0, ...late)
+  return rest
+}
+
+/**
+ * Heal stored slot values whose module default changed after templates were saved.
+ * Each entry maps a superseded default string to its replacement; only exact
+ * matches of the old default are rewritten, so genuine edits are never clobbered.
+ */
+const VALUE_MIGRATIONS: Record<string, Record<string, [string, string]>> = {
+  footer: {
+    contact: ['Questions? concierge@getaccess.com', 'concierge@getaccess.com'],
+  },
+  disclosure: {
+    legal: [
+      'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.',
+      'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.',
+    ],
+  },
+}
+
+function migrateModule(m: ModuleInstance): ModuleInstance {
+  let out = m
+  // Value-level heals (footer contact, disclosure legal, …).
+  const fields = VALUE_MIGRATIONS[m.moduleId]
+  if (fields) {
+    for (const [key, [from, to]] of Object.entries(fields)) {
+      if (out.values[key] === from) out = { ...out, values: { ...out.values, [key]: to } }
+    }
+  }
+  // Icon card was "Numbered card": a legacy `number` digit becomes the matching circle-number icon.
+  if (out.moduleId === 'card-numbered' && !out.values.icon) {
+    const num = out.values.number
+    const icon = num && /^[0-9]$/.test(num) ? `circle-number-${num}` : 'bolt'
+    const { number, ...rest } = out.values
+    out = { ...out, values: { ...rest, icon, shape: 'rounded' } }
+  }
+  return out
+}
+
 /** The retired Hero module expands into logo + full-width image + centered heading. */
 function migrateTemplate(t: EmailTemplate): EmailTemplate {
-  if (!t.modules.some((m) => m.moduleId === 'hero')) return t
+  const withModules = (mods: ModuleInstance[]) => reorderDisclosure(mods.map(migrateModule))
+  if (!t.modules.some((m) => m.moduleId === 'hero')) return { ...t, modules: withModules(t.modules) }
   return {
     ...t,
-    modules: t.modules.flatMap((m) => {
-      if (m.moduleId !== 'hero') return [m]
-      const imageValues = m.values.image ? { image: m.values.image } : undefined
-      return [
-        instanceOf('logo-heading', m.color),
-        instanceOf('image', m.color, 'full', imageValues),
-        instanceOf('heading', m.color, m.variantId === 'eyebrow' ? 'centered-eyebrow' : 'centered', {
-          eyebrow: m.values.eyebrow ?? '',
-          title: m.values.title ?? '',
-        }),
-      ]
-    }),
+    modules: withModules(
+      t.modules.flatMap((m) => {
+        if (m.moduleId !== 'hero') return [m]
+        const imageValues = m.values.image ? { image: m.values.image } : undefined
+        return [
+          instanceOf('logo-heading', m.color),
+          instanceOf('image', m.color, 'full', imageValues),
+          instanceOf('heading', m.color, m.variantId === 'eyebrow' ? 'centered-eyebrow' : 'centered', {
+            eyebrow: m.values.eyebrow ?? '',
+            title: m.values.title ?? '',
+          }),
+        ]
+      }),
+    ),
   }
 }
 
@@ -64,7 +114,7 @@ function loadTemplates(): EmailTemplate[] {
   } catch {
     /* corrupted — fall through to seed */
   }
-  const seeds = seedTemplates()
+  const seeds = seedTemplates().map(migrateTemplate)
   for (const key of OLD_STORAGE_KEYS) {
     try {
       const raw = localStorage.getItem(key)
@@ -113,7 +163,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           theme: 'dark',
           subject: '',
           preheader: '',
-          modules: [instanceOf('logo-heading'), instanceOf('footer'), instanceOf('disclosure')],
+          modules: [instanceOf('logo-heading'), instanceOf('divider'), instanceOf('disclosure'), instanceOf('footer')],
           updatedAt: Date.now(),
         }
         setTemplates((p) => [t, ...p])
