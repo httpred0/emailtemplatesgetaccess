@@ -166,25 +166,26 @@ function accent(mainDark: string, mainLight = darken(mainDark, 0.28)): { dark: A
 }
 
 export const ACCENTS = {
-  // Figma-tuned trio (hand values preserved).
+  // Dark tone = bright brand hex (reads on dark surfaces). Light tone = a deepened
+  // version tuned for ~AA contrast of 14px text / 1px borders on cream & white.
   sapphire: {
     dark: { main: '#2DAEDE', bg: 'rgba(42,140,174,0.12)', glow: 'rgba(45,174,222,0.2)', deep: '#2DAEDE' },
-    light: { main: '#1884AC', bg: 'rgba(24,132,172,0.12)', glow: 'rgba(24,132,172,0.2)', deep: '#1884AC' },
+    light: { main: '#136580', bg: 'rgba(24,132,172,0.12)', glow: 'rgba(19,101,128,0.2)', deep: '#136580' },
   },
   emerald: {
     dark: { main: '#B2DF99', bg: 'rgba(178,223,153,0.12)', glow: 'rgba(178,223,153,0.2)', deep: '#B2DF99' },
-    light: { main: '#8FAD7E', bg: 'rgba(178,223,153,0.12)', glow: 'rgba(143,173,126,0.2)', deep: '#8FAD7E' },
+    light: { main: '#457035', bg: 'rgba(178,223,153,0.12)', glow: 'rgba(69,112,53,0.2)', deep: '#457035' },
   },
   turquoise: {
     dark: { main: '#47CCBF', bg: 'rgba(37,170,170,0.12)', glow: 'rgba(71,204,191,0.2)', deep: '#25AAAA' },
-    light: { main: '#25AAAA', bg: 'rgba(37,170,170,0.12)', glow: 'rgba(37,170,170,0.2)', deep: '#308081' },
+    light: { main: '#1E6E6E', bg: 'rgba(37,170,170,0.12)', glow: 'rgba(30,110,110,0.2)', deep: '#1E6E6E' },
   },
-  // Extended palette (derived from brand hexes).
-  amber: accent('#F27E49'),
-  gold: accent('#F7BE62'),
-  amethyst: accent('#8F7997'),
-  salmon: accent('#FF717F'),
-  chili: accent('#E53622'),
+  // Extended palette (bright hex on dark; hand-deepened tone on cream/light).
+  amber: accent('#F27E49', '#A84E22'),
+  gold: accent('#F7BE62', '#7A5A1E'),
+  amethyst: accent('#8F7997', '#5E4A66'),
+  salmon: accent('#FF717F', '#A83A48'),
+  chili: accent('#E53622', '#B42615'),
   // Neutral treatments (no theme adaptation): ink for light surfaces, cream for dark.
   dark: {
     dark: { main: '#2B2B29', bg: 'rgba(22,22,22,0.06)', glow: 'rgba(22,22,22,0.2)', deep: '#2B2B29' },
