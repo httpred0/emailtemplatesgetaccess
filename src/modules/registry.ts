@@ -483,8 +483,8 @@ export const MODULES: ModuleDef[] = [
         { value: 'rounded', label: 'Rounded' },
         { value: 'circle', label: 'Circular' },
       ] },
-      { key: 'fill', label: 'Badge fill', type: 'select', default: 'tinted', options: [
-        { value: 'tinted', label: 'Tinted' },
+      { key: 'fill', label: 'Card fill', type: 'select', default: 'tinted', options: [
+        { value: 'tinted', label: 'Filled' },
         { value: 'none', label: 'None (outline)' },
       ] },
       { key: 'title', label: 'Title', type: 'text', default: 'Title Goes Here' },
@@ -500,16 +500,19 @@ export const MODULES: ModuleDef[] = [
       const a = accentFor((variant as AccentId) in ACCENTS ? (variant as AccentId) : 'sapphire', theme)
       // Card surface per Figma: #161616 dark / #FFFBF0 cream / #F5F5F2 light,
       // with the accent "glow" (20% blurred ellipse, top-right) approximated as a gradient.
-      const cardBg = theme === 'dark' ? '#161616' : theme === 'cream' ? '#F5F0E1' : '#F5F5F2'
+      const surface = theme === 'dark' ? '#161616' : theme === 'cream' ? '#F5F0E1' : '#F5F5F2'
       const glow = `background-image:linear-gradient(to bottom left, ${a.glow}, rgba(0,0,0,0) 55%);`
       const iconId = v.icon || DEFAULT_ICON
       const radius = v.shape === 'circle' ? '19px' : '8px'
       const icon = iconDataUri(iconId, a.main)
-      // Outline fill = transparent badge (only the card glow carries color); tinted = 12% accent.
-      const badgeBg = v.fill === 'none' ? 'transparent' : a.bg
-      const badge = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="38" height="38" align="center" valign="middle" style="background-color:${badgeBg};border:1px solid ${a.main};border-radius:${radius};"><img src="${icon}" width="22" height="22" alt="" style="display:block;width:22px;height:22px;border:0;" /></td></tr></table>`
+      const badge = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td width="38" height="38" align="center" valign="middle" style="background-color:${a.bg};border:1px solid ${a.main};border-radius:${radius};"><img src="${icon}" width="22" height="22" alt="" style="display:block;width:22px;height:22px;border:0;" /></td></tr></table>`
       const titlePx = HEADING_SIZES[v.titleSize] ?? HEADING_SIZES.normal
-      const card = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${cardBg}" style="background-color:${cardBg};${glow}border:1px solid rgba(250,240,225,0.04);border-radius:24px;padding:24px;">
+      // Outline card = transparent fill (only the glow shows over the email surface) + full-opacity accent stroke.
+      const outline = v.fill === 'none'
+      const cardBg = outline ? 'transparent' : surface
+      const cardBgAttr = outline ? t.bg : surface
+      const cardBorder = outline ? a.main : 'rgba(250,240,225,0.04)'
+      const card = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="${cardBgAttr}" style="background-color:${cardBg};${glow}border:1px solid ${cardBorder};border-radius:24px;padding:24px;">
         ${badge}
         <h3 data-slot="title" style="margin:16px 0 8px;font-family:${FONT};font-size:${titlePx}px;line-height:${Math.round(titlePx * 1.12)}px;letter-spacing:${-Math.round(titlePx * 2.5) / 100}px;font-weight:normal;color:${t.heading};">${textToHtml(v.title)}</h3>
         <div data-slot="text" data-rich="1" style="margin:0;font-family:${FONT};font-size:16px;line-height:24px;color:${t.body};">${richToHtml(v.text, t.link)}</div>
