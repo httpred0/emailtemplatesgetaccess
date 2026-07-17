@@ -343,9 +343,9 @@ export const MODULES: ModuleDef[] = [
       const inner = `
           <div style="text-align:center;"><img src="${mark}" width="30" height="28" alt="Get Access" style="display:inline-block;width:30px;height:28px;border:0;" /></div>
           <p style="margin:16px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-align:center;">${link('Privacy Policy', v.privacyUrl)}&nbsp;&nbsp;&nbsp;${link('Terms of Service', v.termsUrl)}&nbsp;&nbsp;&nbsp;<span data-slot="contact" style="text-decoration:underline;">${textToHtml(v.contact)}</span></p>
-          <p data-slot="address" style="margin:8px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-align:center;">${escapeHtml(v.address).replace(/\n/g, ', ')}</p>
+          <p data-slot="address" data-ga-address="1" style="margin:8px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-align:center;">${escapeHtml(v.address).replace(/\n/g, ', ')}</p>
           ${unsub}
-          <p data-slot="copyright" style="margin:12px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:#696967;text-align:center;">${textToHtml(v.copyright)}</p>`
+          <p data-slot="copyright" data-ga-copyright="1" style="margin:12px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:#696967;text-align:center;">${textToHtml(v.copyright)}</p>`
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.footerBg};${topStroke}"><tr><td style="padding:24px 40px;">${inner}</td></tr></table>`
     },
   },

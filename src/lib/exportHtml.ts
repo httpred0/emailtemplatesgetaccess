@@ -86,8 +86,9 @@ ${bodyBlocks}
 </html>`
 }
 
-/** Markers used only in the builder/pipeline (data-slot/-rich for editing, data-ga-unsub for the unsub link). */
-const stripMarkers = (html: string) => html.replace(/ data-(slot|rich|ga-unsub)="[^"]*"/g, '')
+/** Markers used only in the builder/pipeline (data-slot/-rich for editing, data-ga-* for provider rewrites). */
+const stripMarkers = (html: string) =>
+  html.replace(/ data-(slot|rich|ga-unsub|ga-address|ga-copyright)="[^"]*"/g, '')
 
 /** HubSpot needs a real unsubscribe: point the marked footer link at its native token. */
 const hubspotUnsub = (html: string) =>
@@ -96,11 +97,28 @@ const hubspotUnsub = (html: string) =>
   )
 
 /**
- * Provider-agnostic pipeline. The ONLY provider-specific steps are the HubSpot unsubscribe
- * rewrite and the token transform; everything else (modules, card, shell) is shared.
+ * HubSpot enforces CAN-SPAM: the sender's physical address and company name must appear as
+ * its native site_settings tokens (validated at publish). Swap the footer's literal address
+ * line for the account address tokens, and the copyright's company name for the name token —
+ * preserving the year. Resend keeps the literals the user typed.
+ */
+const HUBSPOT_ADDRESS =
+  '{{ site_settings.company_street_address_1 }}, {{ site_settings.company_city }}, {{ site_settings.company_state }} {{ site_settings.company_zip }}'
+
+const hubspotFooter = (html: string) =>
+  html
+    .replace(/(<p\b[^>]*\bdata-ga-address="[^"]*"[^>]*>)[\s\S]*?(<\/p>)/g, `$1${HUBSPOT_ADDRESS}$2`)
+    .replace(/(<p\b[^>]*\bdata-ga-copyright="[^"]*"[^>]*>)([\s\S]*?)(<\/p>)/g, (_m, open, inner, close) => {
+      const year = (inner.match(/\b(?:19|20)\d{2}\b/) || [''])[0]
+      return `${open}© ${year ? `${year} ` : ''}{{ site_settings.company_name }}. All rights reserved.${close}`
+    })
+
+/**
+ * Provider-agnostic pipeline. The ONLY provider-specific steps are the HubSpot unsubscribe +
+ * footer-token rewrites and the token transform; everything else (modules, card, shell) is shared.
  */
 function finalize(bodyRaw: string, title: string, preheader: string, theme: ThemeId, provider: Provider): string {
-  const body = stripMarkers(provider === 'hubspot' ? hubspotUnsub(bodyRaw) : bodyRaw)
+  const body = stripMarkers(provider === 'hubspot' ? hubspotFooter(hubspotUnsub(bodyRaw)) : bodyRaw)
   return transformTokens(emailShell(title, preheader, theme, body), provider)
 }
 
