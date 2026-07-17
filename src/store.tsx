@@ -107,6 +107,17 @@ function migrateModule(m: ModuleInstance): ModuleInstance {
     const { number, ...rest } = out.values
     out = { ...out, values: { ...rest, icon, shape: 'rounded' } }
   }
+  // Body's retired bottom-link variants: fold the appended link into the text as an inline
+  // link (now editable/movable), and drop back to the plain/centered variant.
+  if (out.moduleId === 'body' && (out.variantId === 'link' || out.variantId === 'centered-link')) {
+    const { linkLabel, linkUrl, ...rest } = out.values
+    const text = linkLabel && linkUrl ? `${out.values.text ?? ''} <a href="${linkUrl}">${linkLabel}</a>` : out.values.text
+    out = {
+      ...out,
+      variantId: out.variantId === 'centered-link' ? 'centered' : 'plain',
+      values: { ...rest, text: text ?? '' },
+    }
+  }
   return out
 }
 

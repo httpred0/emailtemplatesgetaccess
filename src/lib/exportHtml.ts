@@ -1,6 +1,9 @@
 import { EmailTemplate, ModuleInstance } from '../types'
 import { moduleById } from '../modules/registry'
 import { ThemeId, escapeHtml } from './brand'
+import { Provider, transformTokens } from './tokens'
+
+export type { Provider }
 
 /** Outer canvas behind the 600px email card, per theme. `solid` is the Outlook/bgcolor fallback. */
 const OUTER_BG: Record<ThemeId, { css: string; solid: string }> = {
@@ -29,6 +32,21 @@ const roundedCard = (inner: string, theme: ThemeId) =>
   inner
     ? `<div style="border-radius:${CARD_RADIUS}px;overflow:hidden;border:${CARD_BORDER[theme]};">\n${inner}\n</div>`
     : ''
+
+/** Signature modules render OUTSIDE the rounded card, at the end (on the page background). */
+export function splitModules(modules: ModuleInstance[]): { card: ModuleInstance[]; tail: ModuleInstance[] } {
+  return {
+    card: modules.filter((m) => m.moduleId !== 'signature'),
+    tail: modules.filter((m) => m.moduleId === 'signature'),
+  }
+}
+
+function composeBody(modules: ModuleInstance[], theme: ThemeId): string {
+  const { card, tail } = splitModules(modules)
+  const cardHtml = roundedCard(card.map(renderModuleBlock).join('\n'), theme)
+  const tailHtml = tail.map(renderModuleBlock).join('\n')
+  return `${cardHtml}\n${tailHtml}`
+}
 
 function emailShell(title: string, preheader: string, theme: ThemeId, bodyBlocks: string): string {
   return `<!doctype html>
@@ -68,23 +86,39 @@ ${bodyBlocks}
 </html>`
 }
 
-/** Editing hooks (data-slot/data-rich) are canvas-only — strip them from shipped HTML. */
-const stripEditingAttrs = (html: string) => html.replace(/ data-(slot|rich)="[^"]*"/g, '')
+/** Markers used only in the builder/pipeline (data-slot/-rich for editing, data-ga-unsub for the unsub link). */
+const stripMarkers = (html: string) => html.replace(/ data-(slot|rich|ga-unsub)="[^"]*"/g, '')
 
-export function renderEmailHtml(t: EmailTemplate): string {
-  const theme = t.theme ?? 'dark'
-  const blocks = roundedCard(t.modules.map(renderModuleBlock).join('\n'), theme)
-  return emailShell(t.subject || t.name, t.preheader, theme, stripEditingAttrs(blocks))
+/** HubSpot needs a real unsubscribe: point the marked footer link at its native token. */
+const hubspotUnsub = (html: string) =>
+  html.replace(/<a\b[^>]*\bdata-ga-unsub="[^"]*"[^>]*>/g, (tag) =>
+    tag.replace(/href="[^"]*"/, 'href="{{ unsubscribe_link }}"'),
+  )
+
+/**
+ * Provider-agnostic pipeline. The ONLY provider-specific steps are the HubSpot unsubscribe
+ * rewrite and the token transform; everything else (modules, card, shell) is shared.
+ */
+function finalize(bodyRaw: string, title: string, preheader: string, theme: ThemeId, provider: Provider): string {
+  const body = stripMarkers(provider === 'hubspot' ? hubspotUnsub(bodyRaw) : bodyRaw)
+  return transformTokens(emailShell(title, preheader, theme, body), provider)
 }
 
-export function renderSingleModuleHtml(inst: ModuleInstance, name: string): string {
+export function renderEmailHtml(t: EmailTemplate, provider: Provider = 'resend'): string {
+  const theme = t.theme ?? 'dark'
+  return finalize(composeBody(t.modules, theme), t.subject || t.name, t.preheader, theme, provider)
+}
+
+export function renderSingleModuleHtml(inst: ModuleInstance, name: string, provider: Provider = 'resend'): string {
   const theme = inst.color ?? 'dark'
-  return emailShell(name, '', theme, stripEditingAttrs(roundedCard(renderModuleBlock(inst), theme)))
+  // A lone signature module renders outside the card; anything else keeps the card frame.
+  const body = inst.moduleId === 'signature' ? renderModuleBlock(inst) : roundedCard(renderModuleBlock(inst), theme)
+  return finalize(body, name, '', theme, provider)
 }
 
 /** Bare-canvas markup for gallery thumbnails (no <html> wrapper). */
 export function renderCanvasHtml(t: EmailTemplate): string {
-  return roundedCard(t.modules.map(renderModuleBlock).join('\n'), t.theme ?? 'dark')
+  return composeBody(t.modules, t.theme ?? 'dark')
 }
 
 export function downloadHtml(filename: string, html: string): void {

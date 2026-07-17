@@ -30,6 +30,8 @@ export interface ModuleDef {
   audience: ModuleAudience
   variants: ModuleVariant[]
   slots: SlotDef[]
+  /** Hide the generic Dark/Cream/Light surface control — module ignores inst.color (e.g. Signature). */
+  themeless?: boolean
   /** Email-safe table HTML — single source of truth for canvas preview and export. */
   toHtml: (values: Record<string, string>, variantId: string, theme: ThemeId) => string
 }

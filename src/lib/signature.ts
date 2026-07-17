@@ -19,28 +19,43 @@ const SIG_THEMES: Record<SignatureBg, SigTheme> = {
   none: { bg: '', stroke: '', name: '#0D0D0D', meta: '#3D3D3B', email: '#2B2B29', web: '#C0A968', logo: 'ink' },
 }
 
+/** Transparent signature on a dark page — light text so it stays legible. */
+const NONE_ON_DARK: SigTheme = { bg: '', stroke: '', name: '#FFFFFF', meta: '#A6A6A1', email: '#D1D1CC', web: '#C0A968', logo: 'gold' }
+
 const httpUrl = (s: string) => (/^https?:\/\//i.test(s) ? s : `https://${s}`)
 
+export interface SigOpts {
+  fullWidth?: boolean // stretch the card to 100% of its container (module use)
+  align?: 'left' | 'center' // content layout
+  onDark?: boolean // page/surface behind a transparent (No background) signature is dark
+}
+
 /** The signature block (email-safe table). Fields carry data-slot for inline editing on the canvas. */
-export function renderSignatureBlock(sig: Signature): string {
-  const t = SIG_THEMES[sig.background] ?? SIG_THEMES.none
+export function renderSignatureBlock(sig: Signature, opts: SigOpts = {}): string {
+  const { fullWidth = false, align = 'left', onDark = false } = opts
+  const t = sig.background === 'none' && onDark ? NONE_ON_DARK : SIG_THEMES[sig.background] ?? SIG_THEMES.none
   const mark = markDataUri(sig.logo ?? t.logo)
   const wrapStyle = [
+    fullWidth ? 'width:100%;' : '',
     t.bg ? `background-color:${t.bg};` : '',
     t.stroke ? `border:1px solid ${t.stroke};` : '',
     t.bg || t.stroke ? 'border-radius:16px;' : '',
   ].join('')
   const pad = t.bg || t.stroke ? '20px 24px' : '0'
   const contact = `<a href="mailto:${escapeHtml(sig.email)}" style="color:${t.email};text-decoration:none;"><span data-slot="email">${escapeHtml(sig.email)}</span></a><span style="color:${t.meta};"> &nbsp;&middot;&nbsp; </span><a href="${escapeHtml(httpUrl(sig.website))}" style="color:${t.web};text-decoration:none;"><span data-slot="website">${escapeHtml(sig.website)}</span></a>`
-  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0"${t.bg ? ` bgcolor="${t.bg}"` : ''} style="${wrapStyle}"><tr><td style="padding:${pad};">
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+  const name = `<div data-slot="name" style="font-family:${FONT};font-size:16px;line-height:22px;font-weight:700;color:${t.name};">${escapeHtml(sig.name)}</div>`
+  const title = `<div data-slot="title" style="font-family:${FONT};font-size:14px;line-height:20px;color:${t.meta};padding-top:2px;">${escapeHtml(sig.title)}</div>`
+  const contactLine = `<div style="font-family:${FONT};font-size:14px;line-height:20px;padding-top:8px;">${contact}</div>`
+
+  // Same logomark · divider · text layout in both modes; Centered just centers the group.
+  const centered = align === 'center'
+  const inner = `<table role="presentation" cellpadding="0" cellspacing="0" border="0"${centered ? ' align="center" style="margin:0 auto;"' : ''}><tr>
       <td valign="middle" style="padding-right:16px;"><img src="${mark}" width="44" height="41" alt="Get Access" style="display:block;width:44px;height:41px;border:0;" /></td>
-      <td valign="middle" style="border-left:1px solid ${t.stroke || 'rgba(128,128,128,0.25)'};padding-left:16px;">
-        <div data-slot="name" style="font-family:${FONT};font-size:16px;line-height:22px;font-weight:700;color:${t.name};">${escapeHtml(sig.name)}</div>
-        <div data-slot="title" style="font-family:${FONT};font-size:14px;line-height:20px;color:${t.meta};padding-top:2px;">${escapeHtml(sig.title)}</div>
-        <div style="font-family:${FONT};font-size:14px;line-height:20px;padding-top:8px;">${contact}</div>
-      </td>
-    </tr></table>
+      <td valign="middle" style="border-left:1px solid ${t.stroke || 'rgba(128,128,128,0.25)'};padding-left:16px;">${name}${title}${contactLine}</td>
+    </tr></table>`
+
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0"${fullWidth ? ' width="100%"' : ''}${t.bg ? ` bgcolor="${t.bg}"` : ''} style="${wrapStyle}"><tr><td${centered ? ' align="center"' : ''} style="padding:${pad};">
+    ${inner}
   </td></tr></table>`
 }
 

@@ -1,6 +1,7 @@
-import { ModuleDef } from '../types'
+import { ModuleDef, SignatureBg } from '../types'
 import { richToHtml } from '../lib/rich'
 import { iconDataUri, iconOptions, DEFAULT_ICON } from '../lib/icons'
+import { renderSignatureBlock } from '../lib/signature'
 import {
   THEMES,
   ThemeId,
@@ -104,27 +105,20 @@ export const MODULES: ModuleDef[] = [
   {
     id: 'body',
     name: 'Body',
-    description: 'A paragraph of body copy. Supports merge tags like {{first_name}}.',
+    description: 'A paragraph of body copy. Edit inline — insert links, bold, italic and lists anywhere. Supports merge tags like {{first_name}}.',
     audience: 'all',
     variants: [
       { id: 'plain', name: 'Left aligned' },
-      { id: 'link', name: 'Left with link' },
       { id: 'centered', name: 'Centered' },
-      { id: 'centered-link', name: 'Centered with link' },
     ],
     slots: [
       { key: 'text', label: 'Text', type: 'longtext', default: 'A password reset was requested for this account. The link expires in 30 minutes.' },
-      { key: 'linkLabel', label: 'Link label', type: 'text', default: 'Contact your concierge' },
-      { key: 'linkUrl', label: 'Link URL', type: 'url', default: 'https://getaccess.com' },
     ],
     toHtml: (v, variant, theme) => {
       const t = T(theme)
+      // Legacy 'link'/'centered-link' ids still resolve; alignment is all that matters now.
       const align = variant.startsWith('centered') ? 'center' : 'left'
-      const hasLink = variant === 'link' || variant === 'centered-link'
-      const link = hasLink ? ` <a href="${escapeHtml(v.linkUrl)}" style="color:${t.link};text-decoration:underline;">${textToHtml(v.linkLabel)}</a>` : ''
-      // link variants keep panel-only editing (the appended link would get swallowed by inline edits)
-      const editable = hasLink ? '' : ' data-slot="text" data-rich="1"'
-      return section(t.bg, `<div${editable} style="margin:0;font-family:${FONT};font-size:16px;line-height:24px;color:${t.body};text-align:${align};">${richToHtml(v.text, t.link)}${link}</div>`, '0px 40px 24px')
+      return section(t.bg, `<div data-slot="text" data-rich="1" style="margin:0;font-family:${FONT};font-size:16px;line-height:24px;color:${t.body};text-align:${align};">${richToHtml(v.text, t.link)}</div>`, '0px 40px 24px')
     },
   },
   {
@@ -331,6 +325,10 @@ export const MODULES: ModuleDef[] = [
       { key: 'privacyUrl', label: 'Privacy Policy URL', type: 'url', default: 'https://getaccess.com/privacy' },
       { key: 'termsUrl', label: 'Terms of Service URL', type: 'url', default: 'https://getaccess.com/terms' },
       { key: 'unsubUrl', label: 'Unsubscribe URL', type: 'url', default: 'https://getaccess.com/unsubscribe' },
+      { key: 'unsubscribe', label: 'Unsubscribe link', type: 'select', default: 'show', options: [
+        { value: 'show', label: 'Show' },
+        { value: 'hide', label: 'Hide' },
+      ] },
       { key: 'copyright', label: 'Copyright', type: 'text', default: '© 2026 Get Access. All rights reserved.' },
     ],
     toHtml: (v, variant, theme) => {
@@ -341,11 +339,12 @@ export const MODULES: ModuleDef[] = [
       const topStroke = noStroke ? '' : `border-top:1px solid ${t.footerBorder};`
       const link = (label: string, url: string) =>
         `<a href="${escapeHtml(url)}" style="font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-decoration:underline;">${label}</a>`
+      const unsub = v.unsubscribe === 'hide' ? '' : `<p style="margin:8px 0 0;text-align:center;"><a href="${escapeHtml(v.unsubUrl)}" data-ga-unsub="1" style="font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-decoration:underline;">Unsubscribe</a></p>`
       const inner = `
           <div style="text-align:center;"><img src="${mark}" width="30" height="28" alt="Get Access" style="display:inline-block;width:30px;height:28px;border:0;" /></div>
           <p style="margin:16px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-align:center;">${link('Privacy Policy', v.privacyUrl)}&nbsp;&nbsp;&nbsp;${link('Terms of Service', v.termsUrl)}&nbsp;&nbsp;&nbsp;<span data-slot="contact" style="text-decoration:underline;">${textToHtml(v.contact)}</span></p>
           <p data-slot="address" style="margin:8px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-align:center;">${escapeHtml(v.address).replace(/\n/g, ', ')}</p>
-          <p style="margin:8px 0 0;text-align:center;"><a href="${escapeHtml(v.unsubUrl)}" style="font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-decoration:underline;">Unsubscribe</a></p>
+          ${unsub}
           <p data-slot="copyright" style="margin:12px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:#696967;text-align:center;">${textToHtml(v.copyright)}</p>`
       return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.footerBg};${topStroke}"><tr><td style="padding:24px 40px;">${inner}</td></tr></table>`
     },
@@ -561,6 +560,56 @@ export const MODULES: ModuleDef[] = [
         <td align="right" valign="middle" style="padding:0 0 12px;"><table role="presentation" cellpadding="0" cellspacing="0" border="0" align="right"><tr><td style="background-color:${a.bg};border:1px solid ${a.deep};border-radius:8px;padding:6px 10px;font-family:${FONT};font-size:14px;line-height:16px;color:${a.deep};"><span data-slot="tag">${textToHtml(v.tag)}</span></td></tr></table></td>
       </tr></table>`
       return section(t.bg, row, '8px 40px')
+    },
+  },
+  {
+    id: 'signature',
+    name: 'Signature',
+    description: 'A personal sign-off — renders below the email card, outside it.',
+    audience: 'all',
+    themeless: true,
+    variants: [{ id: 'default', name: 'Default' }],
+    slots: [
+      { key: 'name', label: 'Name', type: 'text', default: 'Ivan Ruiz Tejero' },
+      { key: 'title', label: 'Title & company', type: 'text', default: 'Concierge Lead, Get Access' },
+      { key: 'email', label: 'Email', type: 'text', default: 'ivan@concierge.com' },
+      { key: 'website', label: 'Website', type: 'text', default: 'getaccess.com' },
+      { key: 'align', label: 'Alignment', type: 'select', default: 'center', options: [
+        { value: 'left', label: 'Left aligned' },
+        { value: 'center', label: 'Centered' },
+      ] },
+      { key: 'background', label: 'Background', type: 'select', default: 'none', options: [
+        { value: 'none', label: 'No background' },
+        { value: 'dark', label: 'Dark' },
+        { value: 'cream', label: 'Cream' },
+        { value: 'light', label: 'Light' },
+      ] },
+      { key: 'logo', label: 'Logomark', type: 'select', default: 'auto', options: [
+        { value: 'auto', label: 'Auto' },
+        { value: 'gold', label: 'Gold gradient' },
+        { value: 'ink', label: 'Dark' },
+      ] },
+    ],
+    toHtml: (v, _variant, theme) => {
+      const bg = (['none', 'dark', 'cream', 'light'] as const).includes(v.background as SignatureBg)
+        ? (v.background as SignatureBg)
+        : 'none'
+      const block = renderSignatureBlock(
+        {
+          id: '',
+          label: '',
+          name: v.name,
+          title: v.title,
+          email: v.email,
+          website: v.website,
+          background: bg,
+          logo: v.logo === 'gold' || v.logo === 'ink' ? v.logo : undefined,
+          updatedAt: 0,
+        },
+        // `theme` here is the email's surface theme — a transparent signature adapts to it.
+        { fullWidth: true, align: v.align === 'left' ? 'left' : 'center', onDark: theme === 'dark' },
+      )
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding:24px 40px;">${block}</td></tr></table>`
     },
   },
 ]

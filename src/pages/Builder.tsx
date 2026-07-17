@@ -4,6 +4,7 @@ import { MODULES, moduleById } from '../modules/registry'
 import { THEMES } from '../lib/brand'
 import { serializeRichElement } from '../lib/rich'
 import { renderModuleBlock, renderEmailHtml, downloadHtml, slugify, renderSingleModuleHtml } from '../lib/exportHtml'
+import { PROVIDERS, Provider } from '../lib/tokens'
 import { useStore, reorderDisclosure } from '../store'
 
 const THEME_IDS: ThemeId[] = ['dark', 'cream', 'light']
@@ -13,6 +14,7 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
   const template = templates.find((t) => t.id === templateId)
   const [selectedUid, setSelectedUid] = useState<string | null>(null)
   const [viewport, setViewport] = useState<'desktop' | 'mobile'>('desktop')
+  const [provider, setProvider] = useState<Provider>('resend')
   const [copied, setCopied] = useState(false)
   const copyTimer = useRef<number>()
 
@@ -40,12 +42,17 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
   const addModule = (moduleId: string) => {
     const inst = newInstance(moduleId, template.theme)
     const mods = [...template.modules]
-    // keep the legal tail (disclosure → footer) at the end
-    let insertAt = mods.length
-    while (insertAt > 0 && ['footer', 'disclosure'].includes(mods[insertAt - 1].moduleId) && !['footer', 'disclosure'].includes(moduleId)) {
-      insertAt--
+    if (moduleId === 'signature') {
+      // signature lives below the card — always at the very end
+      mods.push(inst)
+    } else {
+      // keep the legal tail (disclosure → footer) at the end
+      let insertAt = mods.length
+      while (insertAt > 0 && ['footer', 'disclosure'].includes(mods[insertAt - 1].moduleId) && !['footer', 'disclosure'].includes(moduleId)) {
+        insertAt--
+      }
+      mods.splice(insertAt, 0, inst)
     }
-    mods.splice(insertAt, 0, inst)
     patchModules(mods)
     setSelectedUid(inst.uid)
   }
@@ -84,25 +91,25 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
   }
 
   const exportTemplate = () => {
-    const html = renderEmailHtml(template)
+    const html = renderEmailHtml(template, provider)
     if (/(?:src|background)="data:image\//.test(html)) {
       const ok = confirm(
         'This email contains embedded images (uploads, placeholders or the logo).\n\nMost inboxes (Gmail, Outlook) block embedded images — for production sends, host your images online and paste their https URLs into the image fields.\n\nExport anyway?',
       )
       if (!ok) return
     }
-    downloadHtml(slugify(template.name), html)
+    downloadHtml(`${slugify(template.name)}-${provider}`, html)
   }
 
   const copyHtml = async () => {
     try {
-      await navigator.clipboard.writeText(renderEmailHtml(template))
+      await navigator.clipboard.writeText(renderEmailHtml(template, provider))
       setCopied(true)
       window.clearTimeout(copyTimer.current)
       copyTimer.current = window.setTimeout(() => setCopied(false), 1600)
     } catch {
       /* clipboard unavailable — fall back to download */
-      downloadHtml(slugify(template.name), renderEmailHtml(template))
+      downloadHtml(`${slugify(template.name)}-${provider}`, renderEmailHtml(template, provider))
     }
   }
 
@@ -134,6 +141,13 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
           <button className={viewport === 'mobile' ? 'is-active' : ''} onClick={() => setViewport('mobile')}>
             Mobile
           </button>
+        </div>
+        <div className="seg" role="group" aria-label="Export target">
+          {PROVIDERS.map((p) => (
+            <button key={p.id} className={provider === p.id ? 'is-active' : ''} onClick={() => setProvider(p.id)} title={`Export for ${p.name}`}>
+              {p.name}
+            </button>
+          ))}
         </div>
         <button className="btn btn--small" onClick={copyHtml}>
           {copied ? 'Copied ✓' : 'Copy HTML'}
@@ -224,23 +238,34 @@ export function Builder({ templateId, onBack }: { templateId: string; onBack: ()
             {template.modules.length === 0 && (
               <div className="canvas-empty">Add a module from the left to begin.</div>
             )}
-            <div className="canvas-card">
-              {template.modules.map((inst, i) => (
-                <CanvasBlock
-                  key={inst.uid}
-                  inst={inst}
-                  isSelected={inst.uid === selectedUid}
-                  isFirst={i === 0}
-                  isLast={i === template.modules.length - 1}
-                  onSelect={() => setSelectedUid(inst.uid)}
-                  onMoveUp={() => move(inst.uid, -1)}
-                  onMoveDown={() => move(inst.uid, 1)}
-                  onDuplicate={() => duplicate(inst.uid)}
-                  onRemove={() => remove(inst.uid)}
-                  onValue={(key, value) => updateInstanceValue(inst.uid, key, value)}
-                />
-              ))}
-            </div>
+            {(() => {
+              const block = (inst: ModuleInstance) => {
+                const i = template.modules.findIndex((m) => m.uid === inst.uid)
+                return (
+                  <CanvasBlock
+                    key={inst.uid}
+                    inst={inst}
+                    isSelected={inst.uid === selectedUid}
+                    isFirst={i === 0}
+                    isLast={i === template.modules.length - 1}
+                    onSelect={() => setSelectedUid(inst.uid)}
+                    onMoveUp={() => move(inst.uid, -1)}
+                    onMoveDown={() => move(inst.uid, 1)}
+                    onDuplicate={() => duplicate(inst.uid)}
+                    onRemove={() => remove(inst.uid)}
+                    onValue={(key, value) => updateInstanceValue(inst.uid, key, value)}
+                  />
+                )
+              }
+              const cardMods = template.modules.filter((m) => m.moduleId !== 'signature')
+              const tailMods = template.modules.filter((m) => m.moduleId === 'signature')
+              return (
+                <>
+                  <div className="canvas-card">{cardMods.map(block)}</div>
+                  {tailMods.map(block)}
+                </>
+              )
+            })()}
           </div>
         </div>
 
@@ -392,20 +417,22 @@ function Inspector({
             </div>
           </div>
         )}
-        <div className="field">
-          <label>Color</label>
-          <div className="variant-row">
-            {THEME_IDS.map((th) => (
-              <button
-                key={th}
-                className={`chip ${th === inst.color ? 'is-active' : ''}`}
-                onClick={() => onChange({ color: th })}
-              >
-                {THEMES[th].name}
-              </button>
-            ))}
+        {!mod.themeless && (
+          <div className="field">
+            <label>Color</label>
+            <div className="variant-row">
+              {THEME_IDS.map((th) => (
+                <button
+                  key={th}
+                  className={`chip ${th === inst.color ? 'is-active' : ''}`}
+                  onClick={() => onChange({ color: th })}
+                >
+                  {THEMES[th].name}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {mod.slots.length > 0 && (
@@ -426,7 +453,10 @@ function Inspector({
   )
 }
 
+const MAX_UPLOAD_BYTES = 1024 * 1024 // 1 MB
+
 function SlotField({ slot, value, onChange }: { slot: SlotDef; value: string; onChange: (v: string) => void }) {
+  const [sizeError, setSizeError] = useState('')
   if (slot.type === 'longtext') {
     return (
       <div className="field">
@@ -455,24 +485,39 @@ function SlotField({ slot, value, onChange }: { slot: SlotDef; value: string; on
       <div className="field img-slot">
         <label>{slot.label}</label>
         <img src={value} alt="" className="img-slot__thumb" />
+
+        <span className="img-slot__cap">Upload — preview only (max 1 MB)</span>
         <input
           type="file"
           accept="image/*"
           onChange={(e) => {
             const file = e.target.files?.[0]
             if (!file) return
+            if (file.size > MAX_UPLOAD_BYTES) {
+              setSizeError(
+                `That image is ${(file.size / (1024 * 1024)).toFixed(1)} MB — the max is 1 MB. Compress it, or host it and paste the URL below.`,
+              )
+              e.target.value = '' // let the same file be re-picked after compressing
+              return
+            }
+            setSizeError('')
             const reader = new FileReader()
             reader.onload = () => onChange(String(reader.result))
             reader.readAsDataURL(file)
           }}
         />
+        {sizeError && <div className="field__error">{sizeError}</div>}
+
+        <span className="img-slot__cap">Hosted image URL — used in the sent email</span>
         <input
           type="url"
-          placeholder="…or paste an image URL"
+          placeholder="https://… (paste a hosted link)"
           onChange={(e) => e.target.value && onChange(e.target.value)}
         />
         <div className="field__help">
-          For real sends, use a hosted https image URL — most inboxes block embedded uploads.
+          Uploading is only to preview the layout and check the 1 MB limit — embedded images don’t render once
+          the email is sent. For the final email, host the image (HubSpot or any public location) and paste its
+          link above.
         </div>
       </div>
     )
