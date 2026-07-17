@@ -243,14 +243,24 @@ export const BTN_FONT = FONT
 /** Gold 300 — the designated accent for eyebrow labels across the system (all themes). */
 export const EYEBROW_GOLD = '#C0A968'
 
-/** Logo lockup (from the brand SVG package) as a data URI — gold gradient for dark, ink for light surfaces. */
+/**
+ * Base URL for hosted brand assets (PNGs under public/brand/). When set, rendered/exported
+ * HTML references absolute PNG URLs so the logo, logomark and icons show in Outlook, Gmail
+ * and HubSpot (which strip inline SVG data-URIs). Set empty to embed data-URIs instead
+ * (offline/dev). Regenerate the PNGs with scripts/rasterize-*.mjs after changing brand art.
+ */
+export const ASSET_BASE = 'https://emailtemplatesgetaccess.vercel.app'
+
+/** Logo lockup — hosted PNG when ASSET_BASE is set, else inline SVG (gold for dark, ink for light). */
 export function logoDataUri(kind: 'gold' | 'ink'): string {
+  if (ASSET_BASE) return `${ASSET_BASE}/brand/logo-lockup-${kind}.png`
   const svg = kind === 'gold' ? logoRaw : logoRaw.replace(/fill="url\(#paint[^"]*\)"/g, 'fill="#161616"')
   return `data:image/svg+xml,${encodeURIComponent(svg)}`
 }
 
-/** Standalone logomark (starburst, 30×28) — gold gradient for dark footers, ink for cream/light. */
+/** Standalone logomark (starburst, 30×28) — hosted PNG when ASSET_BASE is set, else inline SVG. */
 export function markDataUri(kind: 'gold' | 'ink'): string {
+  if (ASSET_BASE) return `${ASSET_BASE}/brand/logomark-${kind}.png`
   return `data:image/svg+xml,${encodeURIComponent(kind === 'gold' ? markGoldRaw : markDarkRaw)}`
 }
 

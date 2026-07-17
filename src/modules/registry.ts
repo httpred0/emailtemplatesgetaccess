@@ -64,7 +64,7 @@ export const MODULES: ModuleDef[] = [
       const t = T(theme)
       const logo = logoDataUri(t.logo)
       const align = variant === 'left' ? 'left' : 'center'
-      return section(t.bg, `<div style="text-align:${align};"><img src="${logo}" height="22" alt="Get Access" style="display:inline-block;height:22px;width:auto;border:0;" /></div>`, '32px 40px 0px')
+      return section(t.bg, `<div style="text-align:${align};"><img src="${logo}" width="160" height="22" alt="Get Access" style="display:inline-block;width:160px;height:22px;border:0;" /></div>`, '32px 40px 0px')
     },
   },
   {

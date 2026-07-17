@@ -14,18 +14,11 @@ mkdirSync(out, { recursive: true })
 // Source strokes/fills are authored in this token and recolored at render time (see lib/icons.ts).
 const TOKEN = /#ECD4AB/gi
 
-// The complete set of colors the Icon card can paint an icon.
-// Source of truth: brand.ts ACCENTS[*].dark.main + the cream/light surface knockouts (registry.ts).
+// The complete set of colors the Icon card can paint an icon, keyed by hosted-PNG filename slug.
+// Shared with the URL builder (lib/icons.ts) via this JSON so the two can't drift.
 // On dark the icon takes the bright accent; on cream/light the accent moves to the badge fill and
 // the icon is knocked out to the surface, so the deepened light tones are never used on the icon.
-const COLORS = {
-  // bright accent (dark surface)
-  sapphire: '#2DAEDE', emerald: '#B2DF99', turquoise: '#47CCBF', amber: '#F27E49',
-  gold: '#F7BE62', amethyst: '#8F7997', salmon: '#FF717F', chili: '#E53622',
-  // near-white knockouts (cream/light surface + their card bg for outline variants)
-  'surface-cream': '#F5F0E1', 'bg-cream': '#FAF5E6',
-  'surface-light': '#F5F5F2', 'bg-light': '#FFFFFF',
-}
+const COLORS = JSON.parse(readFileSync(join(root, 'src', 'lib', 'icon-asset-colors.json'), 'utf8'))
 
 const iconFiles = readdirSync(iconsDir).filter((f) => f.endsWith('.svg'))
 let count = 0
