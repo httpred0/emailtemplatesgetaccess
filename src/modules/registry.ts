@@ -142,7 +142,7 @@ export const MODULES: ModuleDef[] = [
           return `<tr><td width="16" valign="top" style="font-family:${FONT};font-size:16px;line-height:22px;color:${t.muted};text-align:center;padding:${i > 0 ? '12px' : '0'} 0 0;">${marker}</td><td width="12" style="font-size:0;">&nbsp;</td><td valign="top" style="font-family:${FONT};font-size:16px;line-height:22px;color:${t.body};padding:${i > 0 ? '12px' : '0'} 0 0;">${textToHtml(item)}</td></tr>`
         })
         .join('')
-      return section(t.bg, `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${rows}</table>`, '24px 40px')
+      return section(t.bg, `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${rows}</table>`, '12px 40px')
     },
   },
   {
@@ -191,7 +191,7 @@ export const MODULES: ModuleDef[] = [
   {
     id: 'spacer',
     name: 'Spacer',
-    description: 'Vertical breathing room in five sizes.',
+    description: 'Vertical breathing room in a range of sizes.',
     audience: 'all',
     variants: [
       { id: 's4', name: '4px' },
@@ -199,6 +199,7 @@ export const MODULES: ModuleDef[] = [
       { id: 's12', name: '12px' },
       { id: 's16', name: '16px' },
       { id: 's24', name: '24px' },
+      { id: 's40', name: '40px' },
     ],
     slots: [],
     toHtml: (_v, variant, theme) => {
@@ -360,31 +361,16 @@ export const MODULES: ModuleDef[] = [
     ],
     slots: [
       { key: 'legal', label: 'Legal text', type: 'longtext', default: 'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.' },
-      { key: 'align', label: 'Alignment', type: 'select', default: 'center', options: [
-        { value: 'center', label: 'Centered' },
-        { value: 'left', label: 'Left' },
-      ] },
-      {
-        key: 'paddingBottom',
-        label: 'Bottom padding',
-        type: 'select',
-        default: '0',
-        options: [
-          { value: '0', label: '0px' },
-          { value: '24', label: '24px' },
-        ],
-      },
     ],
     toHtml: (v, variant, theme) => {
       const t = T(theme)
       // Spec: 12px #AAAAAA on dark; darker equivalents on light surfaces for readability.
       const color = theme === 'dark' ? '#AAAAAA' : theme === 'cream' ? '#696967' : '#7A7A75'
       const noStroke = variant.includes('no-stroke')
-      const align = v.align === 'left' ? 'left' : 'center'
       const topStroke = noStroke ? '' : `border-top:1px solid ${t.footerBorder};`
-      const padBottom = v.paddingBottom === '24' ? 24 : 0
-      const inner = `<div data-slot="legal" data-rich="1" style="margin:0;font-family:${FONT};font-size:12px;line-height:18px;color:${color};text-align:${align};">${richToHtml(v.legal, T(theme).link)}</div>`
-      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.footerBg};${topStroke}"><tr><td style="padding:24px 40px ${padBottom}px;">${inner}</td></tr></table>`
+      // Always left-aligned dense legal text, always with 24px bottom padding.
+      const inner = `<div data-slot="legal" data-rich="1" style="margin:0;font-family:${FONT};font-size:12px;line-height:18px;color:${color};text-align:left;">${richToHtml(v.legal, T(theme).link)}</div>`
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.footerBg};${topStroke}"><tr><td style="padding:24px 40px;">${inner}</td></tr></table>`
     },
   },
   // ——————————————————— marketing only ———————————————————

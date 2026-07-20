@@ -6,6 +6,8 @@ import seedData from './data/seed-templates.json'
 const STORAGE_KEY = 'ga-email-templates-v3'
 const OLD_STORAGE_KEYS = ['ga-email-templates-v2', 'ga-email-templates-v1']
 const SIG_STORAGE_KEY = 'ga-email-signatures-v1'
+/** One-time flag: rewrite legacy top-stroke footers to no-stroke on next load (see applyFooterNoStroke). */
+const FOOTER_NOSTROKE_FLAG = 'ga-footer-nostroke-migrated-v1'
 
 /** Seed signature — the Ivan example; editable so anyone can make their own. */
 function seedSignatures(): Signature[] {
@@ -144,11 +146,36 @@ function migrateTemplate(t: EmailTemplate): EmailTemplate {
   }
 }
 
+/**
+ * One-time: templates saved before the footer default changed carry a top-stroke footer
+ * ('default'). The footer now defaults to no top line, so rewrite existing ones once — after
+ * that the flag is set, so a user who later re-picks Top stroke keeps it.
+ */
+function applyFooterNoStroke(templates: EmailTemplate[]): EmailTemplate[] {
+  try {
+    if (localStorage.getItem(FOOTER_NOSTROKE_FLAG)) return templates
+  } catch {
+    return templates
+  }
+  const out = templates.map((t) => ({
+    ...t,
+    modules: t.modules.map((m) =>
+      m.moduleId === 'footer' && m.variantId === 'default' ? { ...m, variantId: 'no-stroke' } : m,
+    ),
+  }))
+  try {
+    localStorage.setItem(FOOTER_NOSTROKE_FLAG, '1')
+  } catch {
+    /* ignore */
+  }
+  return out
+}
+
 /** Load templates: prefer v3; migrate any user-made templates from older keys, then add missing starters. */
 function loadTemplates(): EmailTemplate[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return (JSON.parse(raw) as EmailTemplate[]).map(migrateTemplate)
+    if (raw) return applyFooterNoStroke((JSON.parse(raw) as EmailTemplate[]).map(migrateTemplate))
   } catch {
     /* corrupted — fall through to seed */
   }
@@ -160,12 +187,12 @@ function loadTemplates(): EmailTemplate[] {
       const old = JSON.parse(raw) as EmailTemplate[]
       // keep anything the user made themselves (old auto-seeds ended in "— sample")
       const userMade = old.filter((t) => !t.name.endsWith('— sample')).map(migrateTemplate)
-      return [...userMade, ...seeds]
+      return applyFooterNoStroke([...userMade, ...seeds])
     } catch {
       /* skip bad key */
     }
   }
-  return seeds
+  return applyFooterNoStroke(seeds)
 }
 
 interface Store {
@@ -215,7 +242,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
           theme: 'dark',
           subject: '',
           preheader: '',
-          modules: [instanceOf('logo-heading'), instanceOf('divider'), instanceOf('disclosure'), instanceOf('footer')],
+          modules: [
+            instanceOf('logo-heading'),
+            instanceOf('divider'),
+            instanceOf('spacer', 'dark', 's40'),
+            instanceOf('disclosure'),
+            instanceOf('footer'),
+          ],
           updatedAt: Date.now(),
         }
         setTemplates((p) => [t, ...p])
