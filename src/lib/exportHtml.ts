@@ -48,7 +48,7 @@ function composeBody(modules: ModuleInstance[], theme: ThemeId): string {
   return `${cardHtml}\n${tailHtml}`
 }
 
-function emailShell(title: string, preheader: string, theme: ThemeId, bodyBlocks: string): string {
+function emailShell(title: string, preheaderHtml: string, theme: ThemeId, bodyBlocks: string): string {
   return `<!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -68,7 +68,7 @@ function emailShell(title: string, preheader: string, theme: ThemeId, bodyBlocks
   </style>
 </head>
 <body style="margin:0;padding:0;background-color:${OUTER_BG[theme].solid};-webkit-text-size-adjust:100%;">
-  <div style="display:none;max-height:0;overflow:hidden;mso-hide:all;">${escapeHtml(preheader)}</div>
+${preheaderHtml}
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${OUTER_BG[theme].solid}" style="background:${OUTER_BG[theme].css};">
     <tr>
       <td align="center" style="padding:24px 12px;">
@@ -113,13 +113,44 @@ const hubspotFooter = (html: string) =>
       return `${open}© ${year ? `${year} ` : ''}{{ site_settings.company_name }}. All rights reserved.${close}`
     })
 
+/** HubL string escape for a {% … value="…" %} argument (backslash-escape " and \). */
+const hublString = (s: string) => s.replace(/\\/g, '\\\\').replace(/"/g, '\\"')
+
 /**
- * Provider-agnostic pipeline. The ONLY provider-specific steps are the HubSpot unsubscribe +
- * footer-token rewrites and the token transform; everything else (modules, card, shell) is shared.
+ * Preview/preheader text, placed right after <body>. Provider-specific:
+ * - HubSpot: an editable {% text "preview_text" %} field, pre-filled with the template's preheader
+ *   (still editable in HubSpot). Merge tokens are dropped from the default — they're invalid inside
+ *   the HubL value; add preheader personalization via HubSpot's token picker instead.
+ * - Resend: a hidden div carrying the preheader text, with a loud reminder if it's left blank.
+ */
+function preheaderBlock(preheader: string, provider: Provider): string {
+  if (provider === 'hubspot') {
+    const value = hublString(preheader.replace(/\{\{[^}]*\}\}/g, '').replace(/\s+/g, ' ').trim())
+    return `  <!-- Preview text: editable within HubSpot's email editor -->
+  <div id="preview_text" style="display:none!important;max-height:0;max-width:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#0D0D0D;opacity:0;">
+    {% text "preview_text"
+      label="Preview Text <span class=help-text>This text appears after the subject line in supported email clients.</span>",
+      value="${value}",
+      no_wrapper=True
+    %}
+  </div>
+  <!-- Preview text ends here -->`
+  }
+  const text = escapeHtml(preheader).trim() || 'ADD PREVIEW TEXT. REQUIRED!'
+  return `  <!-- Email preview/preheader text -->
+  <div style="display:none!important;max-height:0;max-width:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;opacity:0;color:transparent;">
+    ${text}
+  </div>
+  <!-- End of email preview -->`
+}
+
+/**
+ * Provider-agnostic pipeline. The ONLY provider-specific steps are the preheader block, the HubSpot
+ * unsubscribe + footer-token rewrites and the token transform; everything else (modules, card) is shared.
  */
 function finalize(bodyRaw: string, title: string, preheader: string, theme: ThemeId, provider: Provider): string {
   const body = stripMarkers(provider === 'hubspot' ? hubspotFooter(hubspotUnsub(bodyRaw)) : bodyRaw)
-  return transformTokens(emailShell(title, preheader, theme, body), provider)
+  return transformTokens(emailShell(title, preheaderBlock(preheader, provider), theme, body), provider)
 }
 
 export function renderEmailHtml(t: EmailTemplate, provider: Provider = 'resend'): string {
