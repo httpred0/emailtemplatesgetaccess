@@ -148,26 +148,22 @@ export const MODULES: ModuleDef[] = [
   {
     id: 'code',
     name: 'Verification code',
-    description: 'One-time code displayed as character boxes.',
+    description: 'One-time code or merge tag, shown in a single bordered box.',
     audience: 'all',
     variants: [
       { id: 'default', name: 'Left aligned' },
       { id: 'centered', name: 'Centered' },
     ],
     slots: [
-      { key: 'code', label: 'Code (or merge tag)', type: 'text', default: 'LH5W09', help: 'Up to 8 characters. A merge tag like {{code}} renders one box per character of the tag when sent.' },
+      { key: 'code', label: 'Code (or merge tag)', type: 'text', default: 'LH5W09', help: 'A short code or a merge tag like {{code}} — rendered as-is inside one box.' },
     ],
     toHtml: (v, variant, theme) => {
       const t = T(theme)
-      const chars = v.code.slice(0, 8).split('')
-      const cells = chars
-        .map(
-          (c, i) =>
-            `${i > 0 ? '<td width="8" style="font-size:0;">&nbsp;</td>' : ''}<td width="72" align="center" bgcolor="${theme === 'dark' ? '#222220' : t.codeBg}" style="background-color:${t.codeBg};border:1px solid ${t.codeBorder};border-radius:8px;padding:14px 4px;font-family:${FONT};font-size:32px;line-height:36px;font-weight:bold;letter-spacing:0.3px;color:${t.codeChar};">${escapeHtml(c)}</td>`,
-        )
-        .join('')
+      // One bordered box holding the whole code/merge tag. Fill, border and text are theme-aware
+      // (dark / cream / light), so a merge tag like {{code}} stays intact instead of splitting.
       const align = variant === 'centered' ? 'center' : 'left'
-      return section(t.bg, `<table role="presentation" cellpadding="0" cellspacing="0" border="0" align="${align}" style="margin:0 ${align === 'center' ? 'auto' : '0'};"><tr>${cells}</tr></table>`, '24px 40px')
+      const box = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="${align}" valign="middle" height="56" bgcolor="${theme === 'dark' ? '#222220' : t.codeBg}" style="height:56px;background-color:${t.codeBg};border:1px solid ${t.codeBorder};border-radius:28px;padding:0 28px;font-family:${FONT};font-size:20px;line-height:24px;font-weight:bold;letter-spacing:2px;color:${t.codeChar};text-align:${align};word-break:break-word;"><span data-slot="code">${escapeHtml(v.code)}</span></td></tr></table>`
+      return section(t.bg, box, '24px 40px')
     },
   },
   {
