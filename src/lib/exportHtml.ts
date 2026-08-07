@@ -19,6 +19,13 @@ const CARD_BORDER: Record<ThemeId, string> = {
   light: '1px solid #F7BE62',
 }
 
+/** Card interior surface (matches the modules' bg) — backs the card so no seam shows the page behind. */
+const CARD_SURFACE: Record<ThemeId, string> = {
+  dark: '#161616',
+  cream: '#FAF5E6',
+  light: '#FFFFFF',
+}
+
 export function renderModuleBlock(inst: ModuleInstance): string {
   const mod = moduleById(inst.moduleId)
   if (!mod) return `<!-- unknown module: ${inst.moduleId} -->`
@@ -30,7 +37,7 @@ export const CARD_RADIUS = 24
 
 const roundedCard = (inner: string, theme: ThemeId) =>
   inner
-    ? `<div style="border-radius:${CARD_RADIUS}px;overflow:hidden;border:${CARD_BORDER[theme]};">\n${inner}\n</div>`
+    ? `<div style="background-color:${CARD_SURFACE[theme]};border-radius:${CARD_RADIUS}px;overflow:hidden;border:${CARD_BORDER[theme]};">\n${inner}\n</div>`
     : ''
 
 /** Signature modules render OUTSIDE the rounded card, at the end (on the page background). */

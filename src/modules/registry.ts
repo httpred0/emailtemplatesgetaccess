@@ -32,8 +32,11 @@ import {
 
 const T = (theme: ThemeId) => THEMES[theme]
 
+// Background goes on BOTH the table and the td (attribute + style). Gmail's mobile app paints the
+// cell background reliably but not the parent table's, so a table-only fill left black gaps wherever
+// a cell's content was narrow (left-aligned button) or empty (spacer/divider padding).
 const section = (bg: string, inner: string, padding: string) =>
-  `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"${bg ? ` style="background-color:${bg};"` : ''}><tr><td style="padding:${padding};">${inner}</td></tr></table>`
+  `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"${bg ? ` bgcolor="${bg}" style="background-color:${bg};"` : ''}><tr><td${bg ? ` bgcolor="${bg}"` : ''} style="${bg ? `background-color:${bg};` : ''}padding:${padding};">${inner}</td></tr></table>`
 
 /** Pill button per spec: radius 28, pad 16/28, Arial Medium 16, 56px tall. Goes full-width on mobile via .btn-pill. */
 const pillButton = (label: string, url: string, bg: string, solid: string, color: string, border: string, centered = false, slotKey?: string) =>
@@ -201,7 +204,7 @@ export const MODULES: ModuleDef[] = [
     toHtml: (_v, variant, theme) => {
       const t = T(theme)
       const h = Number(variant.slice(1)) || 8
-      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.bg};"><tr><td style="height:${h}px;line-height:${h}px;font-size:0;">&nbsp;</td></tr></table>`
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${t.bg}" style="background-color:${t.bg};"><tr><td bgcolor="${t.bg}" style="background-color:${t.bg};height:${h}px;line-height:${h}px;font-size:0;">&nbsp;</td></tr></table>`
     },
   },
   {
@@ -303,7 +306,7 @@ export const MODULES: ModuleDef[] = [
     toHtml: (v, variant, theme) => {
       const t = T(theme)
       if (variant === 'full')
-        return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.bg};"><tr><td><img src="${v.image}" width="600" alt="${escapeHtml(v.alt)}" style="display:block;width:100%;height:auto;border:0;" /></td></tr></table>`
+        return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${t.bg}" style="background-color:${t.bg};"><tr><td bgcolor="${t.bg}" style="background-color:${t.bg};"><img src="${v.image}" width="600" alt="${escapeHtml(v.alt)}" style="display:block;width:100%;height:auto;border:0;" /></td></tr></table>`
       return section(t.bg, `<img src="${v.image}" width="520" alt="${escapeHtml(v.alt)}" style="display:block;width:100%;height:auto;border:0;border-radius:16px;" />`, '24px 40px')
     },
   },
@@ -319,8 +322,8 @@ export const MODULES: ModuleDef[] = [
     slots: [
       { key: 'address', label: 'Address', type: 'longtext', default: '2108 N ST #15558\nSacramento, CA 95816 USA' },
       { key: 'contact', label: 'Contact line', type: 'text', default: 'concierge@getaccess.com' },
-      { key: 'privacyUrl', label: 'Privacy Policy URL', type: 'url', default: 'https://getaccess.com/privacy' },
-      { key: 'termsUrl', label: 'Terms of Service URL', type: 'url', default: 'https://getaccess.com/terms' },
+      { key: 'privacyUrl', label: 'Privacy Policy URL', type: 'url', default: 'https://www.getaccess.com/privacy-policy' },
+      { key: 'termsUrl', label: 'Terms of Service URL', type: 'url', default: 'https://www.getaccess.com/terms-of-service' },
       { key: 'unsubUrl', label: 'Unsubscribe URL', type: 'url', default: 'https://getaccess.com/unsubscribe' },
       { key: 'unsubscribe', label: 'Unsubscribe link', type: 'select', default: 'show', options: [
         { value: 'show', label: 'Show' },
@@ -343,7 +346,7 @@ export const MODULES: ModuleDef[] = [
           <p data-slot="address" data-ga-address="1" style="margin:8px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${t.muted};text-align:center;">${escapeHtml(v.address).replace(/\n/g, ', ')}</p>
           ${unsub}
           <p data-slot="copyright" data-ga-copyright="1" style="margin:12px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:#696967;text-align:center;">${textToHtml(v.copyright)}</p>`
-      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.footerBg};${topStroke}"><tr><td style="padding:24px 40px;">${inner}</td></tr></table>`
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${t.footerBg}" style="background-color:${t.footerBg};${topStroke}"><tr><td bgcolor="${t.footerBg}" style="background-color:${t.footerBg};padding:24px 40px;">${inner}</td></tr></table>`
     },
   },
   {
@@ -366,7 +369,7 @@ export const MODULES: ModuleDef[] = [
       const topStroke = noStroke ? '' : `border-top:1px solid ${t.footerBorder};`
       // Always left-aligned dense legal text, always with 24px bottom padding.
       const inner = `<div data-slot="legal" data-rich="1" style="margin:0;font-family:${FONT};font-size:12px;line-height:18px;color:${color};text-align:left;">${richToHtml(v.legal, T(theme).link)}</div>`
-      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${t.footerBg};${topStroke}"><tr><td style="padding:24px 40px;">${inner}</td></tr></table>`
+      return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${t.footerBg}" style="background-color:${t.footerBg};${topStroke}"><tr><td bgcolor="${t.footerBg}" style="background-color:${t.footerBg};padding:24px 40px;">${inner}</td></tr></table>`
     },
   },
   // ——————————————————— marketing only ———————————————————

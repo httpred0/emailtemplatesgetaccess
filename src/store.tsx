@@ -84,6 +84,8 @@ export function reorderDisclosure(mods: ModuleInstance[]): ModuleInstance[] {
 const VALUE_MIGRATIONS: Record<string, Record<string, [string, string]>> = {
   footer: {
     contact: ['Questions? concierge@getaccess.com', 'concierge@getaccess.com'],
+    privacyUrl: ['https://getaccess.com/privacy', 'https://www.getaccess.com/privacy-policy'],
+    termsUrl: ['https://getaccess.com/terms', 'https://www.getaccess.com/terms-of-service'],
   },
   disclosure: {
     legal: [
