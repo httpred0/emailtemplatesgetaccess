@@ -162,7 +162,12 @@ function finalize(bodyRaw: string, title: string, preheader: string, theme: Them
 
 export function renderEmailHtml(t: EmailTemplate, provider: Provider = 'resend'): string {
   const theme = t.theme ?? 'dark'
-  return finalize(composeBody(t.modules, theme), t.subject || t.name, t.preheader, theme, provider)
+  // Transactional emails never carry a marketing unsubscribe link, whatever the footer toggle says.
+  const modules =
+    t.kind === 'transactional'
+      ? t.modules.map((m) => (m.moduleId === 'footer' ? { ...m, values: { ...m.values, unsubscribe: 'hide' } } : m))
+      : t.modules
+  return finalize(composeBody(modules, theme), t.subject || t.name, t.preheader, theme, provider)
 }
 
 export function renderSingleModuleHtml(inst: ModuleInstance, name: string, provider: Provider = 'resend'): string {

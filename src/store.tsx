@@ -125,11 +125,22 @@ function migrateModule(m: ModuleInstance): ModuleInstance {
   return out
 }
 
+/** Transactional emails must not carry a marketing unsubscribe link — force the footer to hide it. */
+function enforceKindRules(t: EmailTemplate): EmailTemplate {
+  if (t.kind !== 'transactional') return t
+  return {
+    ...t,
+    modules: t.modules.map((m) =>
+      m.moduleId === 'footer' ? { ...m, values: { ...m.values, unsubscribe: 'hide' } } : m,
+    ),
+  }
+}
+
 /** The retired Hero module expands into logo + full-width image + centered heading. */
 function migrateTemplate(t: EmailTemplate): EmailTemplate {
   const withModules = (mods: ModuleInstance[]) => reorderDisclosure(mods.map(migrateModule))
-  if (!t.modules.some((m) => m.moduleId === 'hero')) return { ...t, modules: withModules(t.modules) }
-  return {
+  if (!t.modules.some((m) => m.moduleId === 'hero')) return enforceKindRules({ ...t, modules: withModules(t.modules) })
+  return enforceKindRules({
     ...t,
     modules: withModules(
       t.modules.flatMap((m) => {
@@ -145,7 +156,7 @@ function migrateTemplate(t: EmailTemplate): EmailTemplate {
         ]
       }),
     ),
-  }
+  })
 }
 
 /**
@@ -249,7 +260,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
             instanceOf('divider'),
             instanceOf('spacer', 'dark', 's40'),
             instanceOf('disclosure'),
-            instanceOf('footer'),
+            instanceOf('footer', 'dark', undefined, kind === 'transactional' ? { unsubscribe: 'hide' } : undefined),
           ],
           updatedAt: Date.now(),
         }
