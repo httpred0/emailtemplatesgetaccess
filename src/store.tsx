@@ -81,16 +81,24 @@ export function reorderDisclosure(mods: ModuleInstance[]): ModuleInstance[] {
  * Each entry maps a superseded default string to its replacement; only exact
  * matches of the old default are rewritten, so genuine edits are never clobbered.
  */
-const VALUE_MIGRATIONS: Record<string, Record<string, [string, string]>> = {
+const VALUE_MIGRATIONS: Record<string, Record<string, [string, string][]>> = {
   footer: {
-    contact: ['Questions? concierge@getaccess.com', 'concierge@getaccess.com'],
-    privacyUrl: ['https://getaccess.com/privacy', 'https://www.getaccess.com/privacy-policy'],
-    termsUrl: ['https://getaccess.com/terms', 'https://www.getaccess.com/terms-of-service'],
+    contact: [['Questions? concierge@getaccess.com', 'concierge@getaccess.com']],
+    privacyUrl: [
+      ['https://getaccess.com/privacy', 'https://app.getaccess.com/privacy-policy'],
+      ['https://www.getaccess.com/privacy-policy', 'https://app.getaccess.com/privacy-policy'],
+    ],
+    termsUrl: [
+      ['https://getaccess.com/terms', 'https://app.getaccess.com/terms-of-service'],
+      ['https://www.getaccess.com/terms-of-service', 'https://app.getaccess.com/terms-of-service'],
+    ],
   },
   disclosure: {
     legal: [
-      'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.',
-      'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.',
+      [
+        'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security.',
+        'For informational purposes only and intended for approved users. This message does not constitute an offer to sell or a solicitation of an offer to buy any security. Any offer will be made only pursuant to definitive offering documents and applicable disclosures. Past performance is not indicative of future results. Investing involves risk, including the possible loss of principal.',
+      ],
     ],
   },
 }
@@ -100,8 +108,10 @@ function migrateModule(m: ModuleInstance): ModuleInstance {
   // Value-level heals (footer contact, disclosure legal, …).
   const fields = VALUE_MIGRATIONS[m.moduleId]
   if (fields) {
-    for (const [key, [from, to]] of Object.entries(fields)) {
-      if (out.values[key] === from) out = { ...out, values: { ...out.values, [key]: to } }
+    for (const [key, pairs] of Object.entries(fields)) {
+      for (const [from, to] of pairs) {
+        if (out.values[key] === from) out = { ...out, values: { ...out.values, [key]: to } }
+      }
     }
   }
   // Icon card was "Numbered card": a legacy `number` digit becomes the matching circle-number icon.

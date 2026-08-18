@@ -322,8 +322,8 @@ export const MODULES: ModuleDef[] = [
     slots: [
       { key: 'address', label: 'Address', type: 'longtext', default: '2108 N ST #15558\nSacramento, CA 95816 USA' },
       { key: 'contact', label: 'Contact line', type: 'text', default: 'concierge@getaccess.com' },
-      { key: 'privacyUrl', label: 'Privacy Policy URL', type: 'url', default: 'https://www.getaccess.com/privacy-policy' },
-      { key: 'termsUrl', label: 'Terms of Service URL', type: 'url', default: 'https://www.getaccess.com/terms-of-service' },
+      { key: 'privacyUrl', label: 'Privacy Policy URL', type: 'url', default: 'https://app.getaccess.com/privacy-policy' },
+      { key: 'termsUrl', label: 'Terms of Service URL', type: 'url', default: 'https://app.getaccess.com/terms-of-service' },
       { key: 'unsubUrl', label: 'Unsubscribe URL', type: 'url', default: 'https://getaccess.com/unsubscribe' },
       { key: 'unsubscribe', label: 'Unsubscribe link', type: 'select', default: 'show', options: [
         { value: 'show', label: 'Show' },
