@@ -2,10 +2,10 @@
  * Provider-specific personalization tokens.
  *
  * Modules author neutral tokens like {{first_name}}. Each provider rewrites them to
- * its own syntax at export time. Resend keeps our neutral tokens (its variables use
- * exactly this shape); HubSpot maps them to native HubL contact tokens.
+ * its own syntax at export time. Resend Templates require TRIPLE braces ({{{first_name}}}),
+ * so we thicken the braces; HubSpot maps them to native HubL contact tokens (double braces).
  *
- * To add a token: add one row to HUBSPOT_TOKENS. Nothing else changes.
+ * To add a HubSpot mapping: add one row to HUBSPOT_TOKENS. Nothing else changes.
  */
 export type Provider = 'resend' | 'hubspot'
 
@@ -28,7 +28,11 @@ export const HUBSPOT_TOKENS: Record<string, string> = {
 
 /** Rewrite {{ token }} occurrences for the target provider. Whitespace inside braces is tolerated. */
 export function transformTokens(html: string, provider: Provider): string {
-  if (provider !== 'hubspot') return html // Resend uses our neutral {{token}} syntax as-is
+  if (provider !== 'hubspot') {
+    // Resend Templates use TRIPLE braces {{{var}}}. Thicken our neutral double-brace tokens
+    // (look-arounds keep it idempotent and avoid touching any already-triple braces).
+    return html.replace(/(?<!\{)\{\{\s*([^{}]+?)\s*\}\}(?!\})/g, '{{{$1}}}')
+  }
   let out = html
   for (const [ours, hubl] of Object.entries(HUBSPOT_TOKENS)) {
     out = out.replace(new RegExp(`\\{\\{\\s*${ours}\\s*\\}\\}`, 'g'), `{{ ${hubl} }}`)
